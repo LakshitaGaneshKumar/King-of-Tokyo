@@ -14,7 +14,8 @@
         android:id="@+id/yellow_robot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/robot_yellow_large" />
+        app:srcCompat="@drawable/robot_yellow_large"
+        android:contentDescription="@string/yellow_robot"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,13 +26,15 @@
             android:id="@+id/red_robot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/robot_red_large" />
+            app:srcCompat="@drawable/robot_red_large"
+            android:contentDescription="@string/red_robot"/>
 
         <ImageView
             android:id="@+id/white_robot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/robot_white_large" />
+            app:srcCompat="@drawable/robot_white_large"
+            android:contentDescription="@string/white_robot"/>
 
     </LinearLayout>
 
@@ -58,38 +61,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="25dp"
         >
 
         <ImageButton
             android:id="@+id/btnClockwise"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/button_circle"
-            android:src="@drawable/ic_clockwise"
-            android:contentDescription="Clockwise" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/rounded_background"
+            android:src="@drawable/rot_clockwise"
+            android:contentDescription="@string/clockwise_button" />
 
         <ImageButton
             android:id="@+id/btnCounterClockwise"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:background="@drawable/button_circle"
-            android:src="@drawable/ic_counter_clockwise"
-            android:contentDescription="Counter Clockwise" />
-
-
-        <ImageView
-            android:id="@+id/clockwise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/rot_clockwise">
-        </ImageView>
-
-        <ImageView
-            android:id="@+id/counter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/rot_counter">
-        </ImageView>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="25dp"
+            android:background="@drawable/rounded_background"
+            android:src="@drawable/rot_counter"
+            android:contentDescription="@string/counter_button" />
 
     </LinearLayout>
 

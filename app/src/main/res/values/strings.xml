@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">Robot_SP26</string>
     <string name="begin_game_text">Begin the Game</string>
+
     <string name="red_message_text">Red Robot\'s Turn</string>
     <string name="white_message_text">White Robot\'s Turn</string>
     <string name="yellow_message_text">Yellow Robot\'s Turn</string>
+
+    <string name="clockwise_button">Clockwise Button</string>
+    <string name="counter_button">Counter Button</string>
+
+    <string name="white_robot">White Robot</string>
+    <string name="red_robot">Red Robot</string>
+    <string name="yellow_robot">Yellow Robot</string>
 </resources>
