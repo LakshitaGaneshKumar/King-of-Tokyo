@@ -81,7 +81,7 @@
             android:id="@+id/clockwise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/rounded_button">
+            app:srcCompat="@drawable/rot_clockwise">
         </ImageView>
 
         <ImageView
