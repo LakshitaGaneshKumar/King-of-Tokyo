@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     // but we can explicitly set it to Int if we want (it's commented out right now)
     private var turnCount /*: Int*/ = 0
 
-    private val Robots = listOf(
+    private val robots = listOf(
         Robot(R.string.red_message_text, false),
         Robot(R.string.white_message_text, false),
         Robot(R.string.yellow_message_text, false)
@@ -187,10 +187,13 @@ class MainActivity : AppCompatActivity() {
     // we need to finish this in class
     private fun updateMessageBox() {
         // when is kinda like an if else if
-        when (turnCount) {
-            1 -> messageBox.setText(R.string.red_message_text)
-            2 -> messageBox.setText(R.string.white_message_text)
-            3 -> messageBox.setText(R.string.yellow_message_text)
-        }
+//        when (turnCount) {
+//            1 -> messageBox.setText(R.string.red_message_text)
+//            2 -> messageBox.setText(R.string.white_message_text)
+//            else -> messageBox.setText(R.string.yellow_message_text)
+//        }
+
+        // do this instead so it's refactored
+        messageBox.setText(robots[turnCount - 1].robotMessageResource)
     }
 }
