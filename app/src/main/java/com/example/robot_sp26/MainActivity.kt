@@ -35,9 +35,14 @@ class MainActivity : AppCompatActivity() {
     private var turnCount /*: Int*/ = 0
 
     private val robots = listOf(
-        Robot(R.string.red_message_text, false),
-        Robot(R.string.white_message_text, false),
-        Robot(R.string.yellow_message_text, false)
+        Robot(R.string.red_message_text, false,
+            R.drawable.robot_red_large, R.drawable.robot_red_small),
+
+        Robot(R.string.white_message_text, false,
+            R.drawable.robot_white_large, R.drawable.robot_white_small),
+
+        Robot(R.string.yellow_message_text, false,
+            R.drawable.robot_yellow_large, R.drawable.robot_yellow_small)
     )
 
     // fun is a function in kotlin
@@ -139,6 +144,8 @@ class MainActivity : AppCompatActivity() {
             yellowRobotImg.setImageResource(R.drawable.robot_yellow_large)
         }
         updateMessageBox()
+        setRobotTurn()
+        setRobotImages()
     }
 
     // END FROM CLASS
@@ -195,5 +202,18 @@ class MainActivity : AppCompatActivity() {
 
         // do this instead so it's refactored
         messageBox.setText(robots[turnCount - 1].robotMessageResource)
+    }
+
+    // we can use this to update the images
+    private fun setRobotTurn() {
+        // this is an enhanced for loop in Java
+        for (robot in robots) {
+            robot.myTurn = false
+        }
+        robots[turnCount - 1].myTurn = true
+    }
+
+    private fun setRobotImages() {
+
     }
 }
