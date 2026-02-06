@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:orientation="vertical"
-    android:gravity="top|center_horizontal"
+    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -45,44 +45,44 @@
 <!--    we have to manually add the id in if we don't use drag and drop. we also have to wire up the message box on the kt file-->
 
 
-    <!--THIS IS FROM CLASS-->
-    <!--    <TextView-->
-<!--        android:id="@+id/message_box"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="24sp"-->
-<!--        android:text="@string/begin_game_text"-->
-<!--        >-->
-
-<!--    </TextView>-->
-
-<!--THIS IS FOR HOMEWORK 1-->
-    <LinearLayout
+<!--    THIS IS FROM CLASS-->
+        <TextView
+        android:id="@+id/message_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="25dp"
+        android:textSize="24sp"
+        android:text="@string/begin_game_text"
         >
 
-        <ImageButton
-            android:id="@+id/clockwise_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="25dp"
-            android:background="@drawable/rounded_background"
-            android:src="@drawable/rot_clockwise"
-            android:contentDescription="@string/clockwise_button" />
+    </TextView>
 
-        <ImageButton
-            android:id="@+id/counter_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="25dp"
-            android:background="@drawable/rounded_background"
-            android:src="@drawable/rot_counter"
-            android:contentDescription="@string/counter_button" />
+<!--THIS IS FOR HOMEWORK 1-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        >-->
 
-    </LinearLayout>
+<!--        <ImageButton-->
+<!--            android:id="@+id/clockwise_button"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginEnd="25dp"-->
+<!--            android:background="@drawable/rounded_background"-->
+<!--            android:src="@drawable/rot_clockwise"-->
+<!--            android:contentDescription="@string/clockwise_button" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/counter_button"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginStart="25dp"-->
+<!--            android:background="@drawable/rounded_background"-->
+<!--            android:src="@drawable/rot_counter"-->
+<!--            android:contentDescription="@string/counter_button" />-->
+
+<!--    </LinearLayout>-->
 <!--    end of HW 1-->
 
 </LinearLayout>
