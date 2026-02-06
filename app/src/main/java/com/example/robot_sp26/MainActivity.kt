@@ -22,6 +22,11 @@ class MainActivity : AppCompatActivity() {
     // wire up the message_box from the activity_main.xml file
     private lateinit var messageBox : TextView
 
+    // START HW 1
+    private lateinit var clockwiseButton : ImageView
+    private lateinit var counterButton : ImageView
+    // END HW 1
+
     // doesn't need to be a lateinit because we can just init it right here
     // this will help us keep track of which robot's turn it is
     // this needs to be a var because we will be changing this value
@@ -53,48 +58,92 @@ class MainActivity : AppCompatActivity() {
         whiteRobotImg = findViewById(R.id.white_robot)
         yellowRobotImg = findViewById(R.id.yellow_robot)
 
-        // fulfill the promise to messageBox
-        messageBox = findViewById(R.id.message_box)
+        // THIS IS WHAT WE DID IN CLASS
+//        // fulfill the promise to messageBox
+//        messageBox = findViewById(R.id.message_box)
+//
+//        // lambda is a nameless or anonymous function
+//        // there are two options for setOnClickListener, where one of them is a lambda
+//        // we use lambdas a lot in mobile development because it's just more efficient
+//        // use Toast - it's capitalized because it's the class that's making the call
+//        // if it's all CAPS like LENGTH_SHORT, it's a constant field
+//        // the toast is like a print debug statement to make sure that we wired up everything correctly
+//
+//
+//        redRobotImg.setOnClickListener {
+//            // this vs context
+//            // this is a key word
+//            // A.B(D) - A is the object, . is the method call, B is the method name, D is the parameter. then B will have access to A and D because A made the call and D is passed in
+//            // "this" is like an argument which gets passed implicitly. in this case, the program itself is being passed into the context
+//            // "context" is an activity, which right now it's the entire program
+//            // Toast.makeText(this, "Red Robot Clicked", Toast.LENGTH_SHORT).show() - we can comment this out now because we know that it's all wired up
+//            toggleImage()
+//        }
+//
+//        whiteRobotImg.setOnClickListener {
+//           // Toast.makeText(this, "White Robot Clicked", Toast.LENGTH_SHORT).show()
+//            toggleImage()
+//        }
+//
+//        yellowRobotImg.setOnClickListener {
+//         //   Toast.makeText(this, "Yellow Robot Clicked", Toast.LENGTH_SHORT).show()
+//            toggleImage()
+//        }
 
-        // lambda is a nameless or anonymous function
-        // there are two options for setOnClickListener, where one of them is a lambda
-        // we use lambdas a lot in mobile development because it's just more efficient
-        // use Toast - it's capitalized because it's the class that's making the call
-        // if it's all CAPS like LENGTH_SHORT, it's a constant field
-        // the toast is like a print debug statement to make sure that we wired up everything correctly
-        redRobotImg.setOnClickListener {
-            // this vs context
-            // this is a key word
-            // A.B(D) - A is the object, . is the method call, B is the method name, D is the parameter. then B will have access to A and D because A made the call and D is passed in
-            // "this" is like an argument which gets passed implicitly. in this case, the program itself is being passed into the context
-            // "context" is an activity, which right now it's the entire program
-            // Toast.makeText(this, "Red Robot Clicked", Toast.LENGTH_SHORT).show() - we can comment this out now because we know that it's all wired up
-            toggleImage()
+        // END OF WHAT WE DID IN CLASS - commented out for HW 1
+
+        // START OF HW 1
+//
+        // fulfilling the promise of wiring up
+        clockwiseButton = findViewById(R.id.clockwise_button)
+        counterButton = findViewById(R.id.counter_button)
+
+        // make the buttons function
+        clockwiseButton.setOnClickListener {
+            clockwiseButtonToggle()
         }
 
-        whiteRobotImg.setOnClickListener {
-           // Toast.makeText(this, "White Robot Clicked", Toast.LENGTH_SHORT).show()
-            toggleImage()
+        counterButton.setOnClickListener {
+            counterButtonToggle()
         }
 
-        yellowRobotImg.setOnClickListener {
-         //   Toast.makeText(this, "Yellow Robot Clicked", Toast.LENGTH_SHORT).show()
-            toggleImage()
-        }
+        // END OF HW 1
+
     }// end onCreate
 
-    // we create a new function
-    // when turnCount is 0, we just started the game and all the robots will be large
-    // so the cycle needs to be 0, 1, 2, 3, 1, 2, 3, 1, 2, 3...
-    private fun toggleImage() {
-        turnCount++
+    // START FROM CLASS
+//    // we create a new function
+//    // when turnCount is 0, we just started the game and all the robots will be large
+//    // so the cycle needs to be 0, 1, 2, 3, 1, 2, 3, 1, 2, 3...
+//    private fun toggleImage() {
+//        turnCount++
+//
+//        if (turnCount > 3) {
+//            turnCount = 1
+//        }
+//
+//        // these setImageResource statements used to be within the setOnClickListener stuff
+//        // but we just
+//        if (turnCount == 1) {
+//            // the R class tracks IDs. so when we do R.drawable or R.id, it will return an ID of type Int
+//            redRobotImg.setImageResource(R.drawable.robot_red_large)
+//            whiteRobotImg.setImageResource(R.drawable.robot_white_small)
+//            yellowRobotImg.setImageResource(R.drawable.robot_yellow_small)
+//        } else if (turnCount == 2) {
+//            redRobotImg.setImageResource(R.drawable.robot_red_small)
+//            whiteRobotImg.setImageResource(R.drawable.robot_white_large)
+//            yellowRobotImg.setImageResource(R.drawable.robot_yellow_small)
+//        } else {
+//            redRobotImg.setImageResource(R.drawable.robot_red_small)
+//            whiteRobotImg.setImageResource(R.drawable.robot_white_small)
+//            yellowRobotImg.setImageResource(R.drawable.robot_yellow_large)
+//        }
+//    }
 
-        if (turnCount > 3) {
-            turnCount = 1
-        }
+    // END FROM CLASS
 
-        // these setImageResource statements used to be within the setOnClickListener stuff
-        // but we just
+//    // START HW 1
+    private fun updateImage() {
         if (turnCount == 1) {
             // the R class tracks IDs. so when we do R.drawable or R.id, it will return an ID of type Int
             redRobotImg.setImageResource(R.drawable.robot_red_large)
@@ -110,6 +159,29 @@ class MainActivity : AppCompatActivity() {
             yellowRobotImg.setImageResource(R.drawable.robot_yellow_large)
         }
     }
+    private fun clockwiseButtonToggle() {
+        if (turnCount == 0) {
+            turnCount = 1
+        } else {
+            turnCount--
+
+            if (turnCount < 1) {
+                turnCount = 3
+            }
+        }
+        updateImage()
+    }
+
+    private fun counterButtonToggle() {
+        turnCount++
+
+        if (turnCount > 3) {
+            turnCount = 1
+        }
+
+        updateImage()
+    }
+//    // END HW 1
 
     // we need to finish this in class
     private fun updateMessageBox() {

@@ -65,7 +65,7 @@
         >
 
         <ImageButton
-            android:id="@+id/btnClockwise"
+            android:id="@+id/clockwise_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="25dp"
@@ -74,7 +74,7 @@
             android:contentDescription="@string/clockwise_button" />
 
         <ImageButton
-            android:id="@+id/btnCounterClockwise"
+            android:id="@+id/counter_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="25dp"
@@ -83,5 +83,6 @@
             android:contentDescription="@string/counter_button" />
 
     </LinearLayout>
+<!--    end of HW 1-->
 
 </LinearLayout>
