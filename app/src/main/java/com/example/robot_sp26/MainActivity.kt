@@ -34,6 +34,16 @@ class MainActivity : AppCompatActivity() {
     // but we can explicitly set it to Int if we want (it's commented out right now)
     private var turnCount /*: Int*/ = 0
 
+    // list, listOf, mutableListOf, MutableList
+    // list means "i'm creating the list now"
+    // listOf is a function that does the same thing as list.
+    // list and listOf can't be modified (has to be val)
+    // mutableListOf is just a function that calls the MutableList constructor
+    // mutableListOf and MutableList can be modified (can be var)
+
+    // create a mutable list that's gonna store image views
+    private lateinit var robotImages : MutableList<ImageView>
+
     private val robots = listOf(
         Robot(R.string.red_message_text, false,
             R.drawable.robot_red_large, R.drawable.robot_red_small),
@@ -73,6 +83,9 @@ class MainActivity : AppCompatActivity() {
         // use Toast - it's capitalized because it's the class that's making the call
         // if it's all CAPS like LENGTH_SHORT, it's a constant field
         // the toast is like a print debug statement to make sure that we wired up everything correctly
+
+        // the first time this gets run, it will just be the large images of the robots because these are the IDs for the large robots in activity_main.xml
+        robotImages = mutableListOf(redRobotImg, whiteRobotImg, yellowRobotImg)
 
 
         redRobotImg.setOnClickListener {
@@ -127,22 +140,23 @@ class MainActivity : AppCompatActivity() {
             turnCount = 1
         }
 
-        // these setImageResource statements used to be within the setOnClickListener stuff
-        // but we just
-        if (turnCount == 1) {
-            // the R class tracks IDs. so when we do R.drawable or R.id, it will return an ID of type Int
-            redRobotImg.setImageResource(R.drawable.robot_red_large)
-            whiteRobotImg.setImageResource(R.drawable.robot_white_small)
-            yellowRobotImg.setImageResource(R.drawable.robot_yellow_small)
-        } else if (turnCount == 2) {
-            redRobotImg.setImageResource(R.drawable.robot_red_small)
-            whiteRobotImg.setImageResource(R.drawable.robot_white_large)
-            yellowRobotImg.setImageResource(R.drawable.robot_yellow_small)
-        } else {
-            redRobotImg.setImageResource(R.drawable.robot_red_small)
-            whiteRobotImg.setImageResource(R.drawable.robot_white_small)
-            yellowRobotImg.setImageResource(R.drawable.robot_yellow_large)
-        }
+        // COMMENTED THIS OUT BECAUSE THIS IS WHAT setRobotImages() DOES NOW
+//        // these setImageResource statements used to be within the setOnClickListener stuff
+//        // but we just
+//        if (turnCount == 1) {
+//            // the R class tracks IDs. so when we do R.drawable or R.id, it will return an ID of type Int
+//            redRobotImg.setImageResource(R.drawable.robot_red_large)
+//            whiteRobotImg.setImageResource(R.drawable.robot_white_small)
+//            yellowRobotImg.setImageResource(R.drawable.robot_yellow_small)
+//        } else if (turnCount == 2) {
+//            redRobotImg.setImageResource(R.drawable.robot_red_small)
+//            whiteRobotImg.setImageResource(R.drawable.robot_white_large)
+//            yellowRobotImg.setImageResource(R.drawable.robot_yellow_small)
+//        } else {
+//            redRobotImg.setImageResource(R.drawable.robot_red_small)
+//            whiteRobotImg.setImageResource(R.drawable.robot_white_small)
+//            yellowRobotImg.setImageResource(R.drawable.robot_yellow_large)
+//        }
         updateMessageBox()
         setRobotTurn()
         setRobotImages()
@@ -214,6 +228,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setRobotImages() {
-
+        // scrolling through the index
+        for (indy in 0 .. 2) {
+            if (robots[indy].myTurn) {
+                robotImages[indy].setImageResource(robots[indy].robotImageLarge)
+            } else {
+                robotImages[indy].setImageResource(robots[indy].robotImageSmall)
+            }
+        }
     }
 }
