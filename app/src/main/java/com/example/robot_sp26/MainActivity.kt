@@ -1,6 +1,7 @@
 package com.example.robot_sp26
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
+private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     // if you don't write private, it's assumed to be public by default
@@ -65,6 +67,9 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // can use .info, warn, debug, error, verbose, assert
+        Log.d(TAG, "Entered onCreate(savedInstanceState: Bundle?)")
 
         // we fulfill the lateinit promise now
         // get references to inflated views
@@ -128,6 +133,32 @@ class MainActivity : AppCompatActivity() {
         // END OF HW 1
 
     }// end onCreate
+
+    // THESE ARE ALL THE ACTIVATION METHODS IN THE ACTIVITY LIFECYCLE
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() called")
+    }
+    // THESE ARE THE DEACTIVATION METHODS IN THE ACTIVITY LIFECYCLE
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy() called")
+    }
 
     // START FROM CLASS
     // we create a new function
