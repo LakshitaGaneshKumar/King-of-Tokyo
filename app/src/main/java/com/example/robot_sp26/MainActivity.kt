@@ -54,10 +54,11 @@ class MainActivity : AppCompatActivity() {
     // THIS IS GOOD - KNOW WHY IT'S GOOD
     // RobotViewModel by viewModels() will keep the same viewModel when the phone rotates
     // This is now a good place to store our information so it doesn't get destroyed and reset
+            // this is where we will store the turnCount property for the robots
     // when the configuration (rotation) changes
     // by = property delegate (the by property delegate)
     // before rotation, the MainActivity hooks up to the ViewModel
-    // after rotation, we create a new MainActivut, but we point to the SAME ViewModel in memory
+    // after rotation, we create a new MainActivity, but we point to the SAME ViewModel in memory
     private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
         Robot(R.string.red_message_text, false,
