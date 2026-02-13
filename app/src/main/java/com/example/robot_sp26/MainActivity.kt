@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -46,6 +47,18 @@ class MainActivity : AppCompatActivity() {
     // create a mutable list that's gonna store image views
     private lateinit var robotImages : MutableList<ImageView>
 
+    // THIS IS BAD - KNOW WHY IT'S BAD
+    // (it doesn't keep the same viewModel as before when the phone rotates)
+    //private val robotViewModel = RobotViewModel()
+
+    // THIS IS GOOD - KNOW WHY IT'S GOOD
+    // RobotViewModel by viewModels() will keep the same viewModel when the phone rotates
+    // This is now a good place to store our information so it doesn't get destroyed and reset
+    // when the configuration (rotation) changes
+    // by = property delegate (the by property delegate)
+    // before rotation, the MainActivity hooks up to the ViewModel
+    // after rotation, we create a new MainActivut, but we point to the SAME ViewModel in memory
+    private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
         Robot(R.string.red_message_text, false,
             R.drawable.robot_red_large, R.drawable.robot_red_small),
@@ -70,6 +83,11 @@ class MainActivity : AppCompatActivity() {
 
         // can use .info, warn, debug, error, verbose, assert
         Log.d(TAG, "Entered onCreate(savedInstanceState: Bundle?)")
+
+        // this logging shows us that we are using the same ViewModel in memory
+        // because it prints out the memory address
+        // using the by property delegate will prevent memory leaks
+        Log.d(TAG, "Got a viewModel : $robotViewModel")
 
         // we fulfill the lateinit promise now
         // get references to inflated views
