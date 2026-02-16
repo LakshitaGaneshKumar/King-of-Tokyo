@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     // this needs to be a var because we will be changing this value
     // we don't have to explicitly say that it's an Int because it will just assume it is because we init it to 0
     // but we can explicitly set it to Int if we want (it's commented out right now)
-    private var turnCount /*: Int*/ = 0
+    //private var turnCount /*: Int*/ = 0 - commented out in HW 2
 
     // list, listOf, mutableListOf, MutableList
     // list means "i'm creating the list now"
@@ -111,6 +111,12 @@ class MainActivity : AppCompatActivity() {
         // the first time this gets run, it will just be the large images of the robots because these are the IDs for the large robots in activity_main.xml
         robotImages = mutableListOf(redRobotImg, whiteRobotImg, yellowRobotImg)
 
+        // HW 2 - get information from robotViewModel to get the saved state
+        if (robotViewModel.currentTurn != 0) {
+            updateMessageBox()
+            setRobotTurn()
+            setRobotImages()
+        }
 
         redRobotImg.setOnClickListener {
             // this vs context
@@ -184,11 +190,15 @@ class MainActivity : AppCompatActivity() {
     // when turnCount is 0, we just started the game and all the robots will be large
     // so the cycle needs to be 0, 1, 2, 3, 1, 2, 3, 1, 2, 3...
     private fun toggleImage() {
+
+
+        /*
+        COMMENTED OUT IN HW 2
         turnCount++
 
         if (turnCount > 3) {
             turnCount = 1
-        }
+        } */
 
         // COMMENTED THIS OUT BECAUSE THIS IS WHAT setRobotImages() DOES NOW
 //        // these setImageResource statements used to be within the setOnClickListener stuff
@@ -207,6 +217,8 @@ class MainActivity : AppCompatActivity() {
 //            whiteRobotImg.setImageResource(R.drawable.robot_white_small)
 //            yellowRobotImg.setImageResource(R.drawable.robot_yellow_large)
 //        }
+
+        robotViewModel.advanceTurn()
         updateMessageBox()
         setRobotTurn()
         setRobotImages()
@@ -265,7 +277,8 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         // do this instead so it's refactored
-        messageBox.setText(robots[turnCount - 1].robotMessageResource)
+        //messageBox.setText(robots[turnCount - 1].robotMessageResource) - this is what it was before HW2
+        messageBox.setText(robots[robotViewModel.currentTurn - 1].robotMessageResource) /* this is after HW2*/
     }
 
     // we can use this to update the images
@@ -274,7 +287,8 @@ class MainActivity : AppCompatActivity() {
         for (robot in robots) {
             robot.myTurn = false
         }
-        robots[turnCount - 1].myTurn = true
+        // robots[turnCount - 1].myTurn = true - this is what it was before HW2
+        robots[robotViewModel.currentTurn - 1].myTurn = true /* after HW2 */
     }
 
     private fun setRobotImages() {
