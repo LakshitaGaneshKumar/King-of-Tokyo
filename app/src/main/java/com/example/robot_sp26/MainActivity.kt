@@ -113,9 +113,7 @@ class MainActivity : AppCompatActivity() {
 
         // HW 2 - get information from robotViewModel to get the saved state
         if (robotViewModel.currentTurn != 0) {
-            updateMessageBox()
-            setRobotTurn()
-            setRobotImages()
+            updateRobot()
         }
 
         redRobotImg.setOnClickListener {
@@ -219,6 +217,13 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         robotViewModel.advanceTurn()
+        updateRobot()
+//        updateMessageBox()
+//        setRobotTurn()
+//        setRobotImages()
+    }
+
+    private fun updateRobot() {
         updateMessageBox()
         setRobotTurn()
         setRobotImages()

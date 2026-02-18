@@ -12,4 +12,13 @@
     <string name="white_robot">White Robot</string>
     <string name="red_robot">Red Robot</string>
     <string name="yellow_robot">Yellow Robot</string>
+
+    <string name="reward_a">Reward A</string>
+    <string name="reward_b">Reward B</string>
+    <string name="reward_c">Reward C</string>
+    <string name="energy_bolt">Energy Bolt</string>
+    <string name="energy_score">2</string>
+    <string name="reward_a_cost">1</string>
+    <string name="reward_b_cost">2</string>
+    <string name="reward_c_cost">3</string>
 </resources>

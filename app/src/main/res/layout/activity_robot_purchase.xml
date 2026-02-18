@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/robot_layout"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/white_robot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/white_robot"
+            app:layout_constraintBottom_toTopOf="button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/robot_white_large"
+            tools:layout_editor_absoluteX="143dp "
+            tools:layout_editor_absoluteY="240dp" />
+
+        <TextView
+            android:id="@+id/energy_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/energy_score"
+            android:layout_marginEnd="10dp"
+            android:textSize="30sp"
+            app:drawableEndCompat="@drawable/energy_counter"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/robot_layout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/white_robot"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/reward_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reward_a"
+                tools:layout_editor_absoluteX="53dp"
+                tools:layout_editor_absoluteY="420dp" />
+
+            <TextView
+                android:id="@+id/reward_a_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/reward_a_cost"
+                android:layout_marginEnd="10dp"
+                android:textSize="30sp"
+                app:drawableEndCompat="@drawable/energy_counter"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/white_robot">
+
+            <Button
+                android:id="@+id/reward_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reward_b"
+                tools:layout_editor_absoluteX="53dp"
+                tools:layout_editor_absoluteY="420dp" />
+
+            <TextView
+                android:id="@+id/reward_b_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/reward_b_cost"
+                android:layout_marginEnd="10dp"
+                android:textSize="30sp"
+                app:drawableEndCompat="@drawable/energy_counter"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/white_robot"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reward_c"
+                tools:layout_editor_absoluteX="53dp"
+                tools:layout_editor_absoluteY="420dp" />
+
+            <TextView
+                android:id="@+id/reward_c_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/reward_c_cost"
+                android:layout_marginEnd="10dp"
+                android:textSize="30sp"
+                app:drawableEndCompat="@drawable/energy_counter"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

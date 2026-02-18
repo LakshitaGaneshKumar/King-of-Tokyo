@@ -18,6 +18,10 @@ class RobotViewModel : ViewModel() {
     val currentTurn : Int
         get() = turnCount
 
+    override fun onCleared() {
+        super.onCleared()
+    }
+
     fun advanceTurn() {
         turnCount++
         if (turnCount > 3) {
