@@ -1,7 +1,9 @@
 package com.example.robot_sp26
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +26,9 @@ class MainActivity : AppCompatActivity() {
 
     // wire up the message_box from the activity_main.xml file
     private lateinit var messageBox : TextView
+
+    private lateinit var purchaseButton : Button
+
 
     // START HW 1
 //    private lateinit var clockwiseButton : ImageView
@@ -101,6 +106,8 @@ class MainActivity : AppCompatActivity() {
         // fulfill the promise to messageBox
         messageBox = findViewById(R.id.message_box)
 
+        purchaseButton = findViewById(R.id.purchase_button)
+
         // lambda is a nameless or anonymous function
         // there are two options for setOnClickListener, where one of them is a lambda
         // we use lambdas a lot in mobile development because it's just more efficient
@@ -134,6 +141,13 @@ class MainActivity : AppCompatActivity() {
         yellowRobotImg.setOnClickListener {
          //   Toast.makeText(this, "Yellow Robot Clicked", Toast.LENGTH_SHORT).show()
             toggleImage()
+        }
+
+        purchaseButton.setOnClickListener {
+            val intent = Intent(this, RobotPurchase::class.java)
+            //val currentEnergy = robotViewModel.currentTurn
+            //val intent = RobotPurchase.newIntent(this@MainActivity, currentEnergy)
+            startActivity(intent)
         }
 
         // END OF WHAT WE DID IN CLASS - commented out for HW 1

@@ -85,4 +85,13 @@
 <!--    </LinearLayout>-->
 <!--    end of HW 1-->
 
+    <Button
+        android:id="@+id/purchase_button"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="@string/purchase_reward"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="50dp">
+    </Button>
+
 </LinearLayout>

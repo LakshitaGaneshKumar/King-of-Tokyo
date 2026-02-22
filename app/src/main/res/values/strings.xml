@@ -21,4 +21,8 @@
     <string name="reward_a_cost">1</string>
     <string name="reward_b_cost">2</string>
     <string name="reward_c_cost">3</string>
+
+    <string name="purchased">Purchased</string>
+    <string name="insufficient">Insufficient Resources</string>
+    <string name="purchase_reward">Purchase Reward</string>
 </resources>
