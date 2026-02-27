@@ -1,5 +1,6 @@
 package com.example.robot_sp26
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -147,7 +149,8 @@ class MainActivity : AppCompatActivity() {
             // val intent = Intent(this, RobotPurchase::class.java)
             val currentEnergy = robotViewModel.currentTurn
             val intent = RobotPurchase.newIntent(this, currentEnergy)
-            startActivity(intent)
+           // startActivity(intent)
+            robotPurchaseLauncher.launch(intent)
         }
 
         // END OF WHAT WE DID IN CLASS - commented out for HW 1
@@ -170,6 +173,25 @@ class MainActivity : AppCompatActivity() {
         // END OF HW 1
 
     }// end onCreate
+
+    // there will be two required things for the registerForActivityResult function
+    // 1. a contract, which basically says "this is how we are going to communicate with each other."
+    // this is going to be a standard contrac. we pass
+    // pass forward an intent and get back a constant. that constant will be either
+    // Activity.RESULT_OK or Activity.RESULT_CANCELED
+    // 2. a lambda that makes the function work. we just add the {} at the end of the function lol
+    // lambdas are on-the-fly functions that we can just use without having to put it in a class or a definition
+    // the -> in "result ->" tells you the start of the body of the function. the -> separates the body from any parameters
+    // in this case, the parameter is "result"
+    private val robotPurchaseLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // TODO do something with the data
+                val robotPurchaseMade = result.data?.getStringExtra(EXTRA_ROBOT_PURCHASE_MADE) ?: "0"
+                Toast.makeText(this, "Data: ${robotPurchaseMade}", Toast.LENGTH_SHORT).show()
+            }
+
+        }
 
     // THESE ARE ALL THE ACTIVATION METHODS IN THE ACTIVITY LIFECYCLE
     override fun onStart() {
