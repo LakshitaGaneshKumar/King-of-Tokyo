@@ -1,5 +1,7 @@
 package com.example.robot_sp26
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -44,6 +46,14 @@ class RobotPurchase : AppCompatActivity() {
             Toast.makeText(this, s3, Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, R.string.insufficient, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    companion object {
+        fun newIntent(context : Context, robotEnergy : Int) : Intent {
+            return Intent(context, RobotPurchase::class.java).apply {
+                putExtra(EXTRA_ROBOT_ENERGY, robotEnergy)
+            }
         }
     }
 }

@@ -22,9 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/white_robot"
-            app:layout_constraintBottom_toTopOf="button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/robot_white_large"
             tools:layout_editor_absoluteX="143dp "
             tools:layout_editor_absoluteY="240dp" />

@@ -144,9 +144,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         purchaseButton.setOnClickListener {
-            val intent = Intent(this, RobotPurchase::class.java)
-            //val currentEnergy = robotViewModel.currentTurn
-            //val intent = RobotPurchase.newIntent(this@MainActivity, currentEnergy)
+            // val intent = Intent(this, RobotPurchase::class.java)
+            val currentEnergy = robotViewModel.currentTurn
+            val intent = RobotPurchase.newIntent(this, currentEnergy)
             startActivity(intent)
         }
 
