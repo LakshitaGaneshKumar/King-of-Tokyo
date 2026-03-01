@@ -42,7 +42,7 @@ class RobotPurchase : AppCompatActivity() {
     // the android OS, which also kept track of listening for intents, has an activity API called ActivityResult API
     /*
     CES 3200 - Study for Quiz 2 - what are the three different phases we used to get from one activity to
-    the other (main activity to robot purchase) - DONT say we went into the manifest and said "lets not start
+    the other (main activity to robot purchase) - DON'T say we went into the manifest and said "lets not start
     main activity, lets start at robot purchase". we had to register robot purchase as an activity.
     phase 1. make the intent for StartActivity(intent)
 
@@ -69,6 +69,13 @@ we should be explaining this in detail for the quiz. look at the code from each 
         }
     }
 
+    private fun setWhichPurchaseMade(robotPurchaseMade: Int) {
+        var resultIntent = Intent()
+        resultIntent.putExtra(EXTRA_ROBOT_PURCHASE_MADE, robotPurchaseMade.toString())
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
+
     // in order to call it, the class itself must make the call
     // bc this is like the Kotlin version of a static object
     companion object {
@@ -77,12 +84,5 @@ we should be explaining this in detail for the quiz. look at the code from each 
                 putExtra(EXTRA_ROBOT_ENERGY, robotEnergy)
             }
         }
-    }
-
-    private fun setWhichPurchaseMade(robotPurchaseMade: Int) {
-        val resultIntent = Intent()
-        resultIntent.putExtra(EXTRA_ROBOT_PURCHASE_MADE, robotPurchaseMade).toString()
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish()
     }
 }
