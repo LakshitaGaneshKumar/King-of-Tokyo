@@ -14,7 +14,8 @@ class RobotViewModel : ViewModel() {
         Log.d(TAG, "ViewModel instance created")
     }
     private var turnCount = 0
-
+    private var robotEnergy = mutableListOf(0, 0, 0)
+    private var lastPurchase = mutableListOf<String?>(null, null, null)
     val currentTurn : Int
         get() = turnCount
 
@@ -27,5 +28,22 @@ class RobotViewModel : ViewModel() {
         if (turnCount > 3) {
             turnCount = 1
         }
+        robotEnergy[turnCount - 1]++
+    }
+
+    fun getEnergy() : Int {
+        return robotEnergy[turnCount - 1]
+    }
+
+    fun spendEnergy(amt: Int) {
+        robotEnergy[turnCount - 1] -= amt
+    }
+
+    fun setLastPurchase(purchase: String) {
+        lastPurchase[turnCount - 1] = purchase
+    }
+
+    fun getLastPurchase(): String? {
+        return lastPurchase[turnCount - 1]
     }
 }

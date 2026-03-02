@@ -28,8 +28,8 @@ class RobotPurchase : AppCompatActivity() {
         reward_button_c = findViewById(R.id.buy_reward_c)
         robot_energy_available = findViewById(R.id.robot_energy_to_spend)
 
-        robot_energy = 2 // temporary hardcoded for testing
-        robot_energy = intent.getIntExtra(EXTRA_ROBOT_ENERGY, 4)
+      //  robot_energy = 2 // temporary hardcoded for testing
+        robot_energy = intent.getIntExtra(EXTRA_ROBOT_ENERGY, 0)
 
         robot_energy_available.setText(robot_energy.toString())
 
