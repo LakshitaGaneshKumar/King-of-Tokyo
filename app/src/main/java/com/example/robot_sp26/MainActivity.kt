@@ -149,7 +149,17 @@ class MainActivity : AppCompatActivity() {
             // val intent = Intent(this, RobotPurchase::class.java)
             //val currentEnergy = robotViewModel.currentTurn
             val currentEnergy = robotViewModel.getEnergy()
-            val intent = RobotPurchase.newIntent(this, currentEnergy)
+            val currentRobot = robotViewModel.currentTurn
+            robotViewModel.shuffleRewards()
+            val rewards = robotViewModel.selectedRewards
+            val intent = RobotPurchase.newIntent(this, currentEnergy, currentRobot).apply {
+                putExtra("REWARD_1_NAME", rewards[0].name)
+                putExtra("REWARD_1_COST", rewards[0].cost)
+                putExtra("REWARD_2_NAME", rewards[1].name)
+                putExtra("REWARD_2_COST", rewards[1].cost)
+                putExtra("REWARD_3_NAME", rewards[2].name)
+                putExtra("REWARD_3_COST", rewards[2].cost)
+            }
            // startActivity(intent)
             robotPurchaseLauncher.launch(intent)
         }
@@ -194,15 +204,15 @@ class MainActivity : AppCompatActivity() {
                 if (robotPurchaseMade != "0") {
                     robotViewModel.spendEnergy(robotPurchaseMade.toInt())
                     if (robotPurchaseMade == "1") {
-                        robotViewModel.setLastPurchase("Reward A")
+                        robotViewModel.addPurchase(robotViewModel.selectedRewards[0].name)
                     } else if (robotPurchaseMade == "2") {
-                        robotViewModel.setLastPurchase("Reward B")
+                        robotViewModel.addPurchase(robotViewModel.selectedRewards[1].name)
                     } else if (robotPurchaseMade == "3") {
-                        robotViewModel.setLastPurchase("Reward C")
+                        robotViewModel.addPurchase(robotViewModel.selectedRewards[2].name)
                     }
 
                 }
-                Toast.makeText(this, "Purchase Made: ${robotPurchaseMade}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Purchase Made: ${robotPurchaseMade}", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -268,9 +278,9 @@ class MainActivity : AppCompatActivity() {
 
         robotViewModel.advanceTurn()
         updateRobot()
-        val lastPurchase = robotViewModel.getLastPurchase()
-        if (lastPurchase != null) {
-            Toast.makeText(this, "Last Purchase: $lastPurchase", Toast.LENGTH_SHORT).show()
+        val purchases = robotViewModel.getPurchases()
+        if (purchases.size != 0) {
+            Toast.makeText(this, "Purchases: $purchases", Toast.LENGTH_SHORT).show()
         }
 //        updateMessageBox()
 //        setRobotTurn()

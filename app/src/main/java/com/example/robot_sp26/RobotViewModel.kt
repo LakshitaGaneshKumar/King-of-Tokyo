@@ -3,7 +3,7 @@ package com.example.robot_sp26
 import android.util.Log
 import androidx.lifecycle.ViewModel
 
-// you have to do the imports first before you do your consts
+// you have to do the imports first before you do your constants
 // since this is private, this TAG doesn't got confused with the other TAG in MainActivity.kt
 private const val TAG = "RobotViewModel"
 
@@ -15,7 +15,33 @@ class RobotViewModel : ViewModel() {
     }
     private var turnCount = 0
     private var robotEnergy = mutableListOf(0, 0, 0)
-    private var lastPurchase = mutableListOf<String?>(null, null, null)
+
+    //private var lastPurchase = mutableListOf<String?>(null, null, null)
+    private var purchases = mutableListOf(
+        mutableListOf<String?>(),
+        mutableListOf<String?>(),
+        mutableListOf<String?>()
+    )
+
+    private val allRewards = listOf(
+        Rewards("Reward A", 1),
+        Rewards("Reward B", 2),
+        Rewards("Reward C", 3),
+        Rewards("Reward D", 3),
+        Rewards("Reward E", 4),
+        Rewards("Reward F", 4),
+        Rewards("Reward G", 7),
+    )
+    var selectedRewards = allRewards.shuffled().take(3).sortedWith(
+        compareBy({ it.name })
+    )
+
+    fun shuffleRewards() {
+        selectedRewards = allRewards.shuffled().take(3).sortedWith(
+            compareBy({ it.name })
+        )
+    }
+
     val currentTurn : Int
         get() = turnCount
 
@@ -39,11 +65,11 @@ class RobotViewModel : ViewModel() {
         robotEnergy[turnCount - 1] -= amt
     }
 
-    fun setLastPurchase(purchase: String) {
-        lastPurchase[turnCount - 1] = purchase
+    fun addPurchase(purchase: String) {
+        purchases[turnCount - 1].add(purchase)
     }
 
-    fun getLastPurchase(): String? {
-        return lastPurchase[turnCount - 1]
+    fun getPurchases(): MutableList<String?> {
+        return purchases[turnCount - 1]
     }
 }

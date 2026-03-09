@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,12 +13,30 @@ import androidx.appcompat.app.AppCompatActivity
 
 private const val EXTRA_ROBOT_ENERGY = "com.example.robot_sp2.ROBOT_ENERGY" // reverse DNS for name collisions
 /*private*/ const val EXTRA_ROBOT_PURCHASE_MADE = "EXTRA_ROBOT_PURCHASE_MADE" // this is another example of the key:value pair
+const val EXTRA_CURRENT_ROBOT = "EXTRA_CURRENT_ROBOT"
 class RobotPurchase : AppCompatActivity() {
     private lateinit var reward_button_a : Button
     private lateinit var reward_button_b : Button
     private lateinit var reward_button_c : Button
     private lateinit var robot_energy_available : TextView
+    private lateinit var robotImage : ImageView
+    private lateinit var reward_a_cost : TextView
+    private lateinit var reward_b_cost : TextView
+    private lateinit var reward_c_cost : TextView
     private var robot_energy = -1
+//    private val allRewards = listOf(
+//        Rewards("Reward A", 1),
+//        Rewards("Reward B", 2),
+//        Rewards("Reward C", 3),
+//        Rewards("Reward D", 3),
+//        Rewards("Reward E", 4),
+//        Rewards("Reward F", 4),
+//        Rewards("Reward G", 7),
+//    )
+//    val selectedRewards = allRewards.shuffled().take(3).sortedWith(
+//        compareBy({ it.name })
+//    )
+    private lateinit var rewards: List<Rewards>
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +47,47 @@ class RobotPurchase : AppCompatActivity() {
         reward_button_c = findViewById(R.id.buy_reward_c)
         robot_energy_available = findViewById(R.id.robot_energy_to_spend)
 
+        robotImage = findViewById(R.id.current_robot)
+
+        reward_a_cost = findViewById(R.id.reward_a_cost)
+        reward_b_cost = findViewById(R.id.reward_b_cost)
+        reward_c_cost = findViewById(R.id.reward_c_cost)
+
       //  robot_energy = 2 // temporary hardcoded for testing
         robot_energy = intent.getIntExtra(EXTRA_ROBOT_ENERGY, 0)
+        val current_robot = intent.getIntExtra(EXTRA_CURRENT_ROBOT, 1)
+        if (current_robot == 1) {
+            robotImage.setImageResource(R.drawable.robot_red_large)
+        } else if (current_robot == 2) {
+            robotImage.setImageResource(R.drawable.robot_white_large)
+        } else if (current_robot == 3) {
+            robotImage.setImageResource(R.drawable.robot_yellow_large)
+        }
 
         robot_energy_available.setText(robot_energy.toString())
+
+        rewards = listOf(
+            Rewards(
+                intent.getStringExtra("REWARD_1_NAME") ?: "Reward A",
+                intent.getIntExtra("REWARD_1_COST", 1)
+            ),
+            Rewards(
+                intent.getStringExtra("REWARD_2_NAME") ?: "Reward B",
+                intent.getIntExtra("REWARD_2_COST", 2)
+            ),
+            Rewards(
+                intent.getStringExtra("REWARD_3_NAME") ?: "Reward C",
+                intent.getIntExtra("REWARD_3_COST", 3)
+            )
+        )
+
+        reward_button_a.text = rewards[0].name
+        reward_button_b.text = rewards[1].name
+        reward_button_c.text = rewards[2].name
+
+        reward_a_cost.text = rewards[0].cost.toString()
+        reward_b_cost.text = rewards[1].cost.toString()
+        reward_c_cost.text = rewards[2].cost.toString()
 
         reward_button_a.setOnClickListener { makePurchase(1) }
         reward_button_b.setOnClickListener { makePurchase(2) }
@@ -54,19 +110,30 @@ phase 3: we registerForActivityResult so that we can pass back info
 
 we should be explaining this in detail for the quiz. look at the code from each of the phases.*/
 
-    private fun makePurchase(costOfPurchase : Int) {
-        val rewards = listOf(R.string.reward_a, R.string.reward_b, R.string.reward_c)
-        if (robot_energy >= costOfPurchase) {
-            val s1 = getString(rewards[costOfPurchase - 1])
-            val s2 = getString(R.string.purchased)
-            val s3 = s1 + " " + s2
-            robot_energy -= costOfPurchase
-            robot_energy_available.setText(robot_energy.toString())
-            Toast.makeText(this, s3, Toast.LENGTH_SHORT).show()
-            setWhichPurchaseMade(costOfPurchase)
+    private fun makePurchase(index : Int) {
+        val reward = rewards[index - 1]
+
+        if (robot_energy >= reward.cost) {
+            robot_energy -= reward.cost
+            robot_energy_available.text = robot_energy.toString()
+            Toast.makeText(this, "${reward.name} Purchased!", Toast.LENGTH_SHORT).show()
+            setWhichPurchaseMade(index)
         } else {
             Toast.makeText(this, R.string.insufficient, Toast.LENGTH_SHORT).show()
         }
+
+//        val rewards = listOf(R.string.reward_a, R.string.reward_b, R.string.reward_c)
+//        if (robot_energy >= costOfPurchase) {
+//            val s1 = getString(rewards[costOfPurchase - 1])
+//            val s2 = getString(R.string.purchased)
+//            val s3 = s1 + " " + s2
+//            robot_energy -= costOfPurchase
+//            robot_energy_available.setText(robot_energy.toString())
+//            Toast.makeText(this, s3, Toast.LENGTH_SHORT).show()
+//            setWhichPurchaseMade(costOfPurchase)
+//        } else {
+//            Toast.makeText(this, R.string.insufficient, Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun setWhichPurchaseMade(robotPurchaseMade: Int) {
@@ -79,9 +146,10 @@ we should be explaining this in detail for the quiz. look at the code from each 
     // in order to call it, the class itself must make the call
     // bc this is like the Kotlin version of a static object
     companion object {
-        fun newIntent(context : Context, robotEnergy : Int) : Intent {
+        fun newIntent(context : Context, robotEnergy : Int, currentRobot: Int) : Intent {
             return Intent(context, RobotPurchase::class.java).apply {
                 putExtra(EXTRA_ROBOT_ENERGY, robotEnergy)
+                putExtra(EXTRA_CURRENT_ROBOT, currentRobot)
             }
         }
     }
