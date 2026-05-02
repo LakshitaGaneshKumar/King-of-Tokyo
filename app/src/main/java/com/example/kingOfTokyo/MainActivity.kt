@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var whiteRobotImg : ImageView
     private lateinit var yellowRobotImg : ImageView
     private lateinit var messageBox : TextView
+    private lateinit var tokyoOccupantText : TextView
     private lateinit var diceResultText : TextView
     private lateinit var applyRollButton : Button
     private lateinit var purchaseButton : Button
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         whiteRobotImg = findViewById(R.id.white_robot)
         yellowRobotImg = findViewById(R.id.yellow_robot)
         messageBox = findViewById(R.id.message_box)
+        tokyoOccupantText = findViewById(R.id.tokyo_occupant)
         diceResultText = findViewById(R.id.dice_result_text)
         applyRollButton = findViewById(R.id.apply_roll_button)
         purchaseButton = findViewById(R.id.purchase_button)
@@ -90,12 +92,22 @@ class MainActivity : AppCompatActivity() {
         applyRollButton.setOnClickListener {
             robotViewModel.addEnergyFromRoll(pendingLightningCount)
             robotViewModel.addVictoryPoints(pendingVPCount)
+            if (robotViewModel.enterTokyoIfEmpty(robotViewModel.currentTurn)) {
+                Toast.makeText(
+                    this,
+                    "${getRobotName(robotViewModel.currentTurn)} entered Tokyo!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             pendingLightningCount = 0
             pendingVPCount = 0
             applyRollButton.visibility = View.GONE
             updateRollButtonState()
             updateEnergyDisplays()
+            updateTokyoOccupantDisplay()
         }
+
+        updateTokyoOccupantDisplay()
 
         if (robotViewModel.currentTurn != 0) {
             updateRobot()
@@ -297,5 +309,23 @@ class MainActivity : AppCompatActivity() {
         val isRobotTurnActive = robotViewModel.currentTurn in 1..3
         val isApplyVisible = applyRollButton.visibility == View.VISIBLE
         rollButton.isEnabled = isRobotTurnActive && !isApplyVisible && !hasRolledThisTurn
+    }
+
+    private fun updateTokyoOccupantDisplay() {
+        val occupantTurn = robotViewModel.getTokyoOccupantTurn()
+        tokyoOccupantText.text = if (occupantTurn in 1..3) {
+            "Occupied by ${getRobotName(occupantTurn)}"
+        } else {
+            getString(R.string.tokyo_occupant)
+        }
+    }
+
+    private fun getRobotName(turn: Int): String {
+        return when (turn) {
+            1 -> getString(R.string.red_robot)
+            2 -> getString(R.string.white_robot)
+            3 -> getString(R.string.yellow_robot)
+            else -> "Robot"
+        }
     }
 }

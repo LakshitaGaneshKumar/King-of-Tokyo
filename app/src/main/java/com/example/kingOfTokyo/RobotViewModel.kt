@@ -14,6 +14,7 @@ class RobotViewModel : ViewModel() {
         Log.d(TAG, "ViewModel instance created")
     }
     private var turnCount = 0
+    private var tokyoOccupantTurn = 0
     private var robotEnergy = mutableListOf(0, 0, 0)
     private var robotVictoryPoints = mutableListOf(0, 0, 0)
 
@@ -87,5 +88,17 @@ class RobotViewModel : ViewModel() {
 
     fun getPurchases(): MutableList<String?> {
         return purchases[turnCount - 1]
+    }
+
+    fun getTokyoOccupantTurn(): Int = tokyoOccupantTurn
+
+    fun isTokyoOccupied(): Boolean = tokyoOccupantTurn in 1..3
+
+    fun enterTokyoIfEmpty(turn: Int): Boolean {
+        if (!isTokyoOccupied() && turn in 1..3) {
+            tokyoOccupantTurn = turn
+            return true
+        }
+        return false
     }
 }
