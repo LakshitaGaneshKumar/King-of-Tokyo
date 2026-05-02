@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var robotImages : MutableList<ImageView>
     private var pendingLightningCount = 0
     private var pendingVPCount = 0
+    private var hasRolledThisTurn = false
     private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
         Robot(R.string.red_message_text, false,
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         diceResultText.visibility = View.GONE
         applyRollButton.visibility = View.GONE
-        rollButton.isEnabled = true
+        updateRollButtonState()
 
         applyRollButton.setOnClickListener {
             robotViewModel.addEnergyFromRoll(pendingLightningCount)
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
             pendingLightningCount = 0
             pendingVPCount = 0
             applyRollButton.visibility = View.GONE
+            updateRollButtonState()
             updateEnergyDisplays()
         }
 
@@ -114,6 +116,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         rollButton.setOnClickListener {
+            hasRolledThisTurn = true
+            updateRollButtonState()
             val currentRobot = if (robotViewModel.currentTurn in 1..3) {
                 robotViewModel.currentTurn
             } else {
@@ -152,7 +156,14 @@ class MainActivity : AppCompatActivity() {
                     diceResultText.text = "Last roll: ${faces.joinToString("  ")}"
                     diceResultText.visibility = View.VISIBLE
                     applyRollButton.visibility = View.VISIBLE
+                    updateRollButtonState()
+                } else {
+                    hasRolledThisTurn = false
+                    updateRollButtonState()
                 }
+            } else {
+                hasRolledThisTurn = false
+                updateRollButtonState()
             }
         }
 
@@ -200,7 +211,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleImage() {
         robotViewModel.advanceTurn()
-        rollButton.isEnabled = true
+        hasRolledThisTurn = false
+        applyRollButton.visibility = View.GONE
+        updateRollButtonState()
         updateRobot()
         val purchases = robotViewModel.getPurchases()
         if (purchases.size != 0) {
@@ -270,5 +283,11 @@ class MainActivity : AppCompatActivity() {
         yellowRobotCard.setBackgroundResource(
             if (robots[2].myTurn) R.drawable.die_kept_background else R.drawable.die_unkept_background
         )
+    }
+
+    private fun updateRollButtonState() {
+        val isRobotTurnActive = robotViewModel.currentTurn in 1..3
+        val isApplyVisible = applyRollButton.visibility == View.VISIBLE
+        rollButton.isEnabled = isRobotTurnActive && !isApplyVisible && !hasRolledThisTurn
     }
 }
