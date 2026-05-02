@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var yellowRobotImg : ImageView
     private lateinit var messageBox : TextView
     private lateinit var diceResultText : TextView
+    private lateinit var applyRollButton : Button
     private lateinit var purchaseButton : Button
     private lateinit var rollButton : Button
     private lateinit var redRobotCard : View
@@ -59,12 +60,16 @@ class MainActivity : AppCompatActivity() {
         yellowRobotImg = findViewById(R.id.yellow_robot)
         messageBox = findViewById(R.id.message_box)
         diceResultText = findViewById(R.id.dice_result_text)
+        applyRollButton = findViewById(R.id.apply_roll_button)
         purchaseButton = findViewById(R.id.purchase_button)
         rollButton = findViewById(R.id.roll_button)
         redRobotCard = findViewById(R.id.red_robot_card)
         whiteRobotCard = findViewById(R.id.white_robot_card)
         yellowRobotCard = findViewById(R.id.yellow_robot_card)
         robotImages = mutableListOf(redRobotImg, whiteRobotImg, yellowRobotImg)
+
+        diceResultText.visibility = View.GONE
+        applyRollButton.visibility = View.GONE
 
         if (robotViewModel.currentTurn != 0) {
             updateRobot()
@@ -111,6 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }// end onCreate
+    
     private val rollDiceLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -118,6 +124,8 @@ class MainActivity : AppCompatActivity() {
                 if (rawResult.isNotEmpty()) {
                     val faces = rawResult.split(",")
                     diceResultText.text = "Last roll: ${faces.joinToString("  ")}"
+                    diceResultText.visibility = View.VISIBLE
+                    applyRollButton.visibility = View.VISIBLE
                 }
             }
         }

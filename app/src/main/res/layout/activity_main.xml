@@ -111,6 +111,14 @@
                 android:textColor="@color/white"
                 android:gravity="center"/>
 
+            <Button
+                android:id="@+id/apply_roll_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:text="Apply Roll"/>
+
         </LinearLayout>
 
     </FrameLayout>
@@ -160,7 +168,7 @@
                     android:text="@string/robot_health"/>
 
                 <TextView
-                    android:id="@+id/player2_energy"
+                    android:id="@+id/red_robot_energy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/robot_energy"/>
