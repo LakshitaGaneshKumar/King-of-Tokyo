@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var redRobotImg : ImageView
     private lateinit var whiteRobotImg : ImageView
     private lateinit var yellowRobotImg : ImageView
+    private lateinit var tokyoRobotImg : ImageView
     private lateinit var messageBox : TextView
     private lateinit var tokyoOccupantText : TextView
     private lateinit var diceResultText : TextView
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var pendingVPCount = 0
     private var pendingAttackCount = 0
     private var hasRolledThisTurn = false
+    private var awaitingTokyoChoice = false
     private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
         Robot(R.string.red_message_text, false,
@@ -72,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         redRobotImg = findViewById(R.id.red_robot)
         whiteRobotImg = findViewById(R.id.white_robot)
         yellowRobotImg = findViewById(R.id.yellow_robot)
+        tokyoRobotImg = findViewById(R.id.tokyo_robot_image)
         messageBox = findViewById(R.id.message_box)
         tokyoOccupantText = findViewById(R.id.tokyo_occupant)
         diceResultText = findViewById(R.id.dice_result_text)
@@ -97,13 +101,14 @@ class MainActivity : AppCompatActivity() {
         updateRollButtonState()
 
         applyRollButton.setOnClickListener {
+            val currentTurn = robotViewModel.currentTurn
             robotViewModel.addEnergyFromRoll(pendingLightningCount)
             robotViewModel.addVictoryPoints(pendingVPCount)
-            robotViewModel.applyAttackFromRoll(pendingAttackCount)
-            if (robotViewModel.enterTokyoIfEmpty(robotViewModel.currentTurn)) {
+            val attackOutcome = robotViewModel.applyAttackFromRoll(pendingAttackCount)
+            if (robotViewModel.enterTokyoIfEmpty(currentTurn)) {
                 Toast.makeText(
                     this,
-                    "${getRobotName(robotViewModel.currentTurn)} entered Tokyo!",
+                    "${getRobotName(currentTurn)} entered Tokyo!",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -112,12 +117,18 @@ class MainActivity : AppCompatActivity() {
             pendingAttackCount = 0
             applyRollButton.visibility = View.GONE
             hasRolledThisTurn = false
-            robotViewModel.advanceTurn()
-            updateRobot()
-            updateRollButtonState()
             updateEnergyDisplays()
             updateHealthDisplays()
             updateTokyoOccupantDisplay()
+
+            if (attackOutcome.attackerWasOutsideTokyo && attackOutcome.tokyoOccupantDamagedTurn in 1..3) {
+                showTokyoLeavePrompt(
+                    damagedRobotTurn = attackOutcome.tokyoOccupantDamagedTurn,
+                    attackerTurn = currentTurn
+                )
+            } else {
+                finishTurnAfterApply()
+            }
         }
 
         updateTokyoOccupantDisplay()
@@ -336,15 +347,26 @@ class MainActivity : AppCompatActivity() {
     private fun updateRollButtonState() {
         val isRobotTurnActive = robotViewModel.currentTurn in 1..3
         val isApplyVisible = applyRollButton.visibility == View.VISIBLE
-        rollButton.isEnabled = isRobotTurnActive && !isApplyVisible && !hasRolledThisTurn
+        rollButton.isEnabled =
+            isRobotTurnActive && !isApplyVisible && !hasRolledThisTurn && !awaitingTokyoChoice
     }
 
     private fun updateTokyoOccupantDisplay() {
         val occupantTurn = robotViewModel.getTokyoOccupantTurn()
-        tokyoOccupantText.text = if (occupantTurn in 1..3) {
-            "Occupied by ${getRobotName(occupantTurn)}"
+        if (occupantTurn in 1..3) {
+            tokyoOccupantText.text = "Occupied by ${getRobotName(occupantTurn)}"
+            tokyoRobotImg.visibility = View.VISIBLE
+            tokyoRobotImg.setImageResource(
+                when (occupantTurn) {
+                    1 -> R.drawable.robot_red_small
+                    2 -> R.drawable.robot_white_small
+                    3 -> R.drawable.robot_yellow_small
+                    else -> R.drawable.robot_red_small
+                }
+            )
         } else {
-            getString(R.string.tokyo_occupant)
+            tokyoOccupantText.text = getString(R.string.tokyo_occupant)
+            tokyoRobotImg.visibility = View.GONE
         }
     }
 
@@ -355,5 +377,43 @@ class MainActivity : AppCompatActivity() {
             3 -> getString(R.string.yellow_robot)
             else -> "Robot"
         }
+    }
+
+    private fun showTokyoLeavePrompt(damagedRobotTurn: Int, attackerTurn: Int) {
+        awaitingTokyoChoice = true
+        updateRollButtonState()
+
+        val damagedRobotName = getRobotName(damagedRobotTurn)
+        val attackerName = getRobotName(attackerTurn)
+
+        AlertDialog.Builder(this)
+            .setTitle("Tokyo Decision")
+            .setMessage("$damagedRobotName took damage in Tokyo. Leave Tokyo?")
+            .setPositiveButton("Leave") { _, _ ->
+                robotViewModel.vacateTokyo(damagedRobotTurn)
+                robotViewModel.forceEnterTokyo(attackerTurn)
+                Toast.makeText(
+                    this,
+                    "$damagedRobotName left Tokyo. $attackerName entered Tokyo!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                awaitingTokyoChoice = false
+                updateTokyoOccupantDisplay()
+                finishTurnAfterApply()
+            }
+            .setNegativeButton("Stay") { _, _ ->
+                Toast.makeText(this, "$damagedRobotName stayed in Tokyo", Toast.LENGTH_SHORT).show()
+                awaitingTokyoChoice = false
+                updateTokyoOccupantDisplay()
+                finishTurnAfterApply()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun finishTurnAfterApply() {
+        robotViewModel.advanceTurn()
+        updateRobot()
+        updateRollButtonState()
     }
 }

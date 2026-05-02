@@ -7,6 +7,11 @@ import androidx.lifecycle.ViewModel
 // since this is private, this TAG doesn't got confused with the other TAG in MainActivity.kt
 private const val TAG = "RobotViewModel"
 
+data class AttackOutcome(
+    val tokyoOccupantDamagedTurn: Int = 0,
+    val attackerWasOutsideTokyo: Boolean = false
+)
+
 // RobotViewModel is going to be a subclass/child class of ViewModel
 class RobotViewModel : ViewModel() {
     // this is where we do a little more than what the ViewModel parent class does
@@ -105,9 +110,9 @@ class RobotViewModel : ViewModel() {
         return false
     }
 
-    fun applyAttackFromRoll(attackCount: Int) {
+    fun applyAttackFromRoll(attackCount: Int): AttackOutcome {
         if (attackCount <= 0 || turnCount !in 1..3) {
-            return
+            return AttackOutcome()
         }
 
         if (tokyoOccupantTurn == turnCount) {
@@ -116,11 +121,31 @@ class RobotViewModel : ViewModel() {
                     damageRobot(targetTurn, attackCount)
                 }
             }
-            return
+            return AttackOutcome()
         }
 
         if (tokyoOccupantTurn in 1..3) {
             damageRobot(tokyoOccupantTurn, attackCount)
+            return AttackOutcome(
+                tokyoOccupantDamagedTurn = tokyoOccupantTurn,
+                attackerWasOutsideTokyo = true
+            )
+        }
+
+        return AttackOutcome()
+    }
+
+    fun vacateTokyo(turn: Int): Boolean {
+        if (tokyoOccupantTurn == turn) {
+            tokyoOccupantTurn = 0
+            return true
+        }
+        return false
+    }
+
+    fun forceEnterTokyo(turn: Int) {
+        if (turn in 1..3) {
+            tokyoOccupantTurn = turn
         }
     }
 
