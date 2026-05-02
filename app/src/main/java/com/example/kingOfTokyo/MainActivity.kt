@@ -76,7 +76,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         rollButton.setOnClickListener {
-            val currentRobot = robotViewModel.currentTurn
+            val currentRobot = if (robotViewModel.currentTurn in 1..3) {
+                robotViewModel.currentTurn
+            } else {
+                1
+            }
             val intent = RollDice.newIntent(this, currentRobot)
             rollDiceLauncher.launch(intent)
         }
