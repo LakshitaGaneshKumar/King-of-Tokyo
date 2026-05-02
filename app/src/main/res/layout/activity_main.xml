@@ -4,94 +4,232 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray">
 
-<!--    first, you should change the IDs after you drag and drop in the image views-->
-<!--    we also got rid of the weight, which was set to 1 by default-->
-    <ImageView
-        android:id="@+id/yellow_robot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/robot_yellow_large"
-        android:contentDescription="@string/yellow_robot"/>
+    <!-- TOP PLAYER AREA -->
+    <FrameLayout
+        android:id="@+id/player_top_area"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@android:color/white">
+
+            <ImageView
+                android:id="@+id/yellow_robot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/robot_yellow_large"
+                android:contentDescription="@string/yellow_robot"/>
+
+            <TextView
+                android:id="@+id/yellow_robot_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yellow_robot"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/yellow_robot_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot_health"
+                    android:layout_marginEnd="12dp"/>
+
+                <TextView
+                    android:id="@+id/yellow_robot_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot_energy"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- MIDDLE GAME BOARD AREA -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@android:color/black">
+
+            <TextView
+                android:id="@+id/tokyo_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tokyo"
+                android:textColor="@android:color/white"
+                android:textSize="48sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tokyo_occupant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tokyo_occupant"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/message_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/begin_game_text"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- BOTTOM PLAYERS AREA (2 PLAYERS SIDE BY SIDE) -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/red_robot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/robot_red_large"
-            android:contentDescription="@string/red_robot"/>
+        <!-- LEFT PLAYER (Player 2) -->
+        <FrameLayout
+            android:id="@+id/player_left_area"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp">
 
-        <ImageView
-            android:id="@+id/white_robot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/robot_white_large"
-            android:contentDescription="@string/white_robot"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:id="@+id/red_robot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/robot_red_large"
+                    android:contentDescription="@string/red_robot"/>
+
+                <TextView
+                    android:id="@+id/red_robot_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/red_robot"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/red_robot_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot_health"/>
+
+                <TextView
+                    android:id="@+id/player2_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot_energy"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- RIGHT PLAYER (Player 3) -->
+        <FrameLayout
+            android:id="@+id/player_right_area"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:id="@+id/white_robot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/robot_white_large"
+                    android:contentDescription="@string/white_robot"/>
+
+                <TextView
+                    android:id="@+id/white_robot_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/white_robot"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/white_robot_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot_health"/>
+
+                <TextView
+                    android:id="@+id/white_robot_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot_energy"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
 
-<!--    wrap_content = as big as it needs to be-->
-<!--    match_parent = match the parent-->
-<!--    fixed = fixed size-->
-<!--    dp vs sp for fontSize - it should be sp for textSize, dp for everything else-->
-<!--    we have to manually add the id in if we don't use drag and drop. we also have to wire up the message box on the kt file-->
-
-
-<!--    THIS IS FROM CLASS-->
-        <TextView
-        android:id="@+id/message_box"
-        android:layout_width="wrap_content"
+    <!-- GAME CONTROLS -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="@string/begin_game_text"
-        >
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="@android:color/darker_gray">
 
-    </TextView>
+        <Button
+            android:id="@+id/roll_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="Roll Dice"/>
 
-<!--THIS IS FOR HOMEWORK 1-->
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_marginTop="25dp"-->
-<!--        >-->
+        <Button
+            android:id="@+id/purchase_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:text="Purchase Reward"/>
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/clockwise_button"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_marginEnd="25dp"-->
-<!--            android:background="@drawable/rounded_background"-->
-<!--            android:src="@drawable/rot_clockwise"-->
-<!--            android:contentDescription="@string/clockwise_button" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/counter_button"-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_marginStart="25dp"-->
-<!--            android:background="@drawable/rounded_background"-->
-<!--            android:src="@drawable/rot_counter"-->
-<!--            android:contentDescription="@string/counter_button" />-->
-
-<!--    </LinearLayout>-->
-<!--    end of HW 1-->
-
-    <Button
-        android:id="@+id/purchase_button"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:text="@string/purchase_reward"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="50dp">
-    </Button>
+    </LinearLayout>
 
 </LinearLayout>
