@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 const val EXTRA_ROLL_DICE_ROBOT = "EXTRA_ROLL_DICE_ROBOT"
+const val EXTRA_DICE_RESULT = "EXTRA_DICE_RESULT"
 
 class RollDice : AppCompatActivity() {
 
@@ -80,7 +81,10 @@ class RollDice : AppCompatActivity() {
         }
 
         doneButton.setOnClickListener {
-            setResult(Activity.RESULT_OK)
+            val resultIntent = Intent().apply {
+                putExtra(EXTRA_DICE_RESULT, diceValues.joinToString(","))
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
 

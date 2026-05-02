@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var whiteRobotImg : ImageView
     private lateinit var yellowRobotImg : ImageView
     private lateinit var messageBox : TextView
+    private lateinit var diceResultText : TextView
     private lateinit var purchaseButton : Button
     private lateinit var rollButton : Button
     private lateinit var redRobotCard : View
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         whiteRobotImg = findViewById(R.id.white_robot)
         yellowRobotImg = findViewById(R.id.yellow_robot)
         messageBox = findViewById(R.id.message_box)
+        diceResultText = findViewById(R.id.dice_result_text)
         purchaseButton = findViewById(R.id.purchase_button)
         rollButton = findViewById(R.id.roll_button)
         redRobotCard = findViewById(R.id.red_robot_card)
@@ -110,9 +112,14 @@ class MainActivity : AppCompatActivity() {
 
     }// end onCreate
     private val rollDiceLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
-            // dice result returned — no extra data needed for now
-            // TODO
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val rawResult = result.data?.getStringExtra(EXTRA_DICE_RESULT) ?: ""
+                if (rawResult.isNotEmpty()) {
+                    val faces = rawResult.split(",")
+                    diceResultText.text = "Last roll: ${faces.joinToString("  ")}"
+                }
+            }
         }
 
     private val robotPurchaseLauncher =
