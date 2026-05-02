@@ -276,9 +276,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateVPDisplays() {
         val vps = robotViewModel.getAllVictoryPoints()
-        redRobotVP.text = "⭐ ${vps[0]} VP"
-        whiteRobotVP.text = "⭐ ${vps[1]} VP"
-        yellowRobotVP.text = "⭐ ${vps[2]} VP"
+        redRobotVP.text = "🔷 ${vps[0]} VP"
+        whiteRobotVP.text = "🔷 ${vps[1]} VP"
+        yellowRobotVP.text = "🔷 ${vps[2]} VP"
     }
 
     private fun updateRobotCardBackgrounds() {
