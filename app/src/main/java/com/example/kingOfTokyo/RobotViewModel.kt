@@ -54,12 +54,19 @@ class RobotViewModel : ViewModel() {
         if (turnCount > 3) {
             turnCount = 1
         }
-        robotEnergy[turnCount - 1]++
+    }
+
+    fun addEnergyFromRoll(lightningCount: Int) {
+        if (turnCount in 1..3 && lightningCount > 0) {
+            robotEnergy[turnCount - 1] += lightningCount
+        }
     }
 
     fun getEnergy() : Int {
         return robotEnergy[turnCount - 1]
     }
+
+    fun getAllEnergy(): List<Int> = robotEnergy.toList()
 
     fun spendEnergy(amt: Int) {
         robotEnergy[turnCount - 1] -= amt

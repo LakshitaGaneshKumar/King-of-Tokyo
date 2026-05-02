@@ -29,7 +29,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var redRobotCard : View
     private lateinit var whiteRobotCard : View
     private lateinit var yellowRobotCard : View
+    private lateinit var redRobotEnergy : TextView
+    private lateinit var whiteRobotEnergy : TextView
+    private lateinit var yellowRobotEnergy : TextView
     private lateinit var robotImages : MutableList<ImageView>
+    private var pendingLightningCount = 0
     private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
         Robot(R.string.red_message_text, false,
@@ -66,10 +70,20 @@ class MainActivity : AppCompatActivity() {
         redRobotCard = findViewById(R.id.red_robot_card)
         whiteRobotCard = findViewById(R.id.white_robot_card)
         yellowRobotCard = findViewById(R.id.yellow_robot_card)
+        redRobotEnergy = findViewById(R.id.red_robot_energy)
+        whiteRobotEnergy = findViewById(R.id.white_robot_energy)
+        yellowRobotEnergy = findViewById(R.id.yellow_robot_energy)
         robotImages = mutableListOf(redRobotImg, whiteRobotImg, yellowRobotImg)
 
         diceResultText.visibility = View.GONE
         applyRollButton.visibility = View.GONE
+
+        applyRollButton.setOnClickListener {
+            robotViewModel.addEnergyFromRoll(pendingLightningCount)
+            pendingLightningCount = 0
+            applyRollButton.visibility = View.GONE
+            updateEnergyDisplays()
+        }
 
         if (robotViewModel.currentTurn != 0) {
             updateRobot()
@@ -123,6 +137,7 @@ class MainActivity : AppCompatActivity() {
                 val rawResult = result.data?.getStringExtra(EXTRA_DICE_RESULT) ?: ""
                 if (rawResult.isNotEmpty()) {
                     val faces = rawResult.split(",")
+                    pendingLightningCount = faces.count { it == "⚡" || it == "⚡️" }
                     diceResultText.text = "Last roll: ${faces.joinToString("  ")}"
                     diceResultText.visibility = View.VISIBLE
                     applyRollButton.visibility = View.VISIBLE
@@ -205,6 +220,13 @@ class MainActivity : AppCompatActivity() {
                 robotImages[indy].setImageResource(robots[indy].robotImageSmall)
             }
         }
+    }
+
+    private fun updateEnergyDisplays() {
+        val energies = robotViewModel.getAllEnergy()
+        redRobotEnergy.text = "⚡️ ${energies[0]}"
+        whiteRobotEnergy.text = "⚡️ ${energies[1]}"
+        yellowRobotEnergy.text = "⚡️ ${energies[2]}"
     }
 
     private fun updateRobotCardBackgrounds() {
