@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Robot_SP26"
+rootProject.name = "KingOfTokyo"
 include(":app")
  
