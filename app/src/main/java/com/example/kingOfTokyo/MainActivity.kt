@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var redRobotEnergy : TextView
     private lateinit var whiteRobotEnergy : TextView
     private lateinit var yellowRobotEnergy : TextView
+    private lateinit var redRobotVP : TextView
+    private lateinit var whiteRobotVP : TextView
+    private lateinit var yellowRobotVP : TextView
     private lateinit var robotImages : MutableList<ImageView>
     private var pendingLightningCount = 0
     private val robotViewModel : RobotViewModel by viewModels()
@@ -73,6 +76,9 @@ class MainActivity : AppCompatActivity() {
         redRobotEnergy = findViewById(R.id.red_robot_energy)
         whiteRobotEnergy = findViewById(R.id.white_robot_energy)
         yellowRobotEnergy = findViewById(R.id.yellow_robot_energy)
+        redRobotVP = findViewById(R.id.red_robot_vp)
+        whiteRobotVP = findViewById(R.id.white_robot_vp)
+        yellowRobotVP = findViewById(R.id.yellow_robot_vp)
         robotImages = mutableListOf(redRobotImg, whiteRobotImg, yellowRobotImg)
 
         diceResultText.visibility = View.GONE
@@ -227,6 +233,14 @@ class MainActivity : AppCompatActivity() {
         redRobotEnergy.text = "⚡️ ${energies[0]}"
         whiteRobotEnergy.text = "⚡️ ${energies[1]}"
         yellowRobotEnergy.text = "⚡️ ${energies[2]}"
+        updateVPDisplays()
+    }
+
+    private fun updateVPDisplays() {
+        val vps = robotViewModel.getAllVictoryPoints()
+        redRobotVP.text = "⭐ ${vps[0]} VP"
+        whiteRobotVP.text = "⭐ ${vps[1]} VP"
+        yellowRobotVP.text = "⭐ ${vps[2]} VP"
     }
 
     private fun updateRobotCardBackgrounds() {

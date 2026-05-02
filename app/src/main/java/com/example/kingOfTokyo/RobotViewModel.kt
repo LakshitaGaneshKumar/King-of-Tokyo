@@ -15,6 +15,7 @@ class RobotViewModel : ViewModel() {
     }
     private var turnCount = 0
     private var robotEnergy = mutableListOf(0, 0, 0)
+    private var robotVictoryPoints = mutableListOf(0, 0, 0)
 
     //private var lastPurchase = mutableListOf<String?>(null, null, null)
     private var purchases = mutableListOf(
@@ -67,6 +68,14 @@ class RobotViewModel : ViewModel() {
     }
 
     fun getAllEnergy(): List<Int> = robotEnergy.toList()
+
+    fun getAllVictoryPoints(): List<Int> = robotVictoryPoints.toList()
+
+    fun addVictoryPoints(amount: Int) {
+        if (turnCount in 1..3) {
+            robotVictoryPoints[turnCount - 1] += amount
+        }
+    }
 
     fun spendEnergy(amt: Int) {
         robotEnergy[turnCount - 1] -= amt

@@ -59,6 +59,13 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/yellow_robot_vp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="⭐ 0 VP"/>
+
         </LinearLayout>
 
     </FrameLayout>
@@ -173,6 +180,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/robot_energy"/>
 
+                <TextView
+                    android:id="@+id/red_robot_vp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="⭐ 0 VP"/>
+
             </LinearLayout>
 
         </FrameLayout>
@@ -218,6 +232,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/robot_energy"/>
+
+                <TextView
+                    android:id="@+id/white_robot_vp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="⭐ 0 VP"/>
 
             </LinearLayout>
 
