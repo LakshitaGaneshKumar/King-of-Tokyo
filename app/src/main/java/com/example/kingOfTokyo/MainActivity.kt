@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var yellowRobotVP : TextView
     private lateinit var robotImages : MutableList<ImageView>
     private var pendingLightningCount = 0
+    private var pendingVPCount = 0
     private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
         Robot(R.string.red_message_text, false,
@@ -83,10 +84,13 @@ class MainActivity : AppCompatActivity() {
 
         diceResultText.visibility = View.GONE
         applyRollButton.visibility = View.GONE
+        rollButton.isEnabled = true
 
         applyRollButton.setOnClickListener {
             robotViewModel.addEnergyFromRoll(pendingLightningCount)
+            robotViewModel.addVictoryPoints(pendingVPCount)
             pendingLightningCount = 0
+            pendingVPCount = 0
             applyRollButton.visibility = View.GONE
             updateEnergyDisplays()
         }
@@ -144,6 +148,7 @@ class MainActivity : AppCompatActivity() {
                 if (rawResult.isNotEmpty()) {
                     val faces = rawResult.split(",")
                     pendingLightningCount = faces.count { it == "⚡" || it == "⚡️" }
+                    pendingVPCount = calculateVPFromDice(faces)
                     diceResultText.text = "Last roll: ${faces.joinToString("  ")}"
                     diceResultText.visibility = View.VISIBLE
                     applyRollButton.visibility = View.VISIBLE
@@ -195,6 +200,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleImage() {
         robotViewModel.advanceTurn()
+        rollButton.isEnabled = true
         updateRobot()
         val purchases = robotViewModel.getPurchases()
         if (purchases.size != 0) {
@@ -226,6 +232,17 @@ class MainActivity : AppCompatActivity() {
                 robotImages[indy].setImageResource(robots[indy].robotImageSmall)
             }
         }
+    }
+
+    private fun calculateVPFromDice(faces: List<String>): Int {
+        var totalVP = 0
+        for (number in listOf("1", "2", "3")) {
+            val count = faces.count { it == number }
+            if (count >= 3) {
+                totalVP += number.toInt() + (count - 3)
+            }
+        }
+        return totalVP
     }
 
     private fun updateEnergyDisplays() {
