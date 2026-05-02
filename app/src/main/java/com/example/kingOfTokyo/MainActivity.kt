@@ -210,6 +210,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toggleImage() {
+        if (robotViewModel.currentTurn in 1..3 && !hasRolledThisTurn) {
+            Toast.makeText(this, "Roll dice before ending your turn", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (applyRollButton.visibility == View.VISIBLE) {
+            Toast.makeText(this, "Apply roll before ending your turn", Toast.LENGTH_SHORT).show()
+            return
+        }
         robotViewModel.advanceTurn()
         hasRolledThisTurn = false
         applyRollButton.visibility = View.GONE
