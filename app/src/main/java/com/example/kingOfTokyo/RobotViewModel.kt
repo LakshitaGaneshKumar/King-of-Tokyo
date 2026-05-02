@@ -15,6 +15,7 @@ class RobotViewModel : ViewModel() {
     }
     private var turnCount = 0
     private var tokyoOccupantTurn = 0
+    private var robotHealth = mutableListOf(10, 10, 10)
     private var robotEnergy = mutableListOf(0, 0, 0)
     private var robotVictoryPoints = mutableListOf(0, 0, 0)
 
@@ -70,6 +71,8 @@ class RobotViewModel : ViewModel() {
 
     fun getAllEnergy(): List<Int> = robotEnergy.toList()
 
+    fun getAllHealth(): List<Int> = robotHealth.toList()
+
     fun getAllVictoryPoints(): List<Int> = robotVictoryPoints.toList()
 
     fun addVictoryPoints(amount: Int) {
@@ -100,5 +103,29 @@ class RobotViewModel : ViewModel() {
             return true
         }
         return false
+    }
+
+    fun applyAttackFromRoll(attackCount: Int) {
+        if (attackCount <= 0 || turnCount !in 1..3) {
+            return
+        }
+
+        if (tokyoOccupantTurn == turnCount) {
+            for (targetTurn in 1..3) {
+                if (targetTurn != turnCount) {
+                    damageRobot(targetTurn, attackCount)
+                }
+            }
+            return
+        }
+
+        if (tokyoOccupantTurn in 1..3) {
+            damageRobot(tokyoOccupantTurn, attackCount)
+        }
+    }
+
+    private fun damageRobot(targetTurn: Int, damage: Int) {
+        val index = targetTurn - 1
+        robotHealth[index] = (robotHealth[index] - damage).coerceAtLeast(0)
     }
 }

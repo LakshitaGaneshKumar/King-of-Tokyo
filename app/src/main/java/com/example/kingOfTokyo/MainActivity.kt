@@ -33,12 +33,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var redRobotEnergy : TextView
     private lateinit var whiteRobotEnergy : TextView
     private lateinit var yellowRobotEnergy : TextView
+    private lateinit var redRobotHealth : TextView
+    private lateinit var whiteRobotHealth : TextView
+    private lateinit var yellowRobotHealth : TextView
     private lateinit var redRobotVP : TextView
     private lateinit var whiteRobotVP : TextView
     private lateinit var yellowRobotVP : TextView
     private lateinit var robotImages : MutableList<ImageView>
     private var pendingLightningCount = 0
     private var pendingVPCount = 0
+    private var pendingAttackCount = 0
     private var hasRolledThisTurn = false
     private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
@@ -80,6 +84,9 @@ class MainActivity : AppCompatActivity() {
         redRobotEnergy = findViewById(R.id.red_robot_energy)
         whiteRobotEnergy = findViewById(R.id.white_robot_energy)
         yellowRobotEnergy = findViewById(R.id.yellow_robot_energy)
+        redRobotHealth = findViewById(R.id.red_robot_health)
+        whiteRobotHealth = findViewById(R.id.white_robot_health)
+        yellowRobotHealth = findViewById(R.id.yellow_robot_health)
         redRobotVP = findViewById(R.id.red_robot_vp)
         whiteRobotVP = findViewById(R.id.white_robot_vp)
         yellowRobotVP = findViewById(R.id.yellow_robot_vp)
@@ -92,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         applyRollButton.setOnClickListener {
             robotViewModel.addEnergyFromRoll(pendingLightningCount)
             robotViewModel.addVictoryPoints(pendingVPCount)
+            robotViewModel.applyAttackFromRoll(pendingAttackCount)
             if (robotViewModel.enterTokyoIfEmpty(robotViewModel.currentTurn)) {
                 Toast.makeText(
                     this,
@@ -101,16 +109,19 @@ class MainActivity : AppCompatActivity() {
             }
             pendingLightningCount = 0
             pendingVPCount = 0
+            pendingAttackCount = 0
             applyRollButton.visibility = View.GONE
             hasRolledThisTurn = false
             robotViewModel.advanceTurn()
             updateRobot()
             updateRollButtonState()
             updateEnergyDisplays()
+            updateHealthDisplays()
             updateTokyoOccupantDisplay()
         }
 
         updateTokyoOccupantDisplay()
+        updateHealthDisplays()
 
         if (robotViewModel.currentTurn != 0) {
             updateRobot()
@@ -168,16 +179,23 @@ class MainActivity : AppCompatActivity() {
                     val faces = rawResult.split(",")
                     pendingLightningCount = faces.count { it == "⚡" || it == "⚡️" }
                     pendingVPCount = calculateVPFromDice(faces)
+                    pendingAttackCount = faces.count { it == "💥" }
                     diceResultText.text = "Last roll: ${faces.joinToString("  ")}"
                     diceResultText.visibility = View.VISIBLE
                     applyRollButton.visibility = View.VISIBLE
                     updateRollButtonState()
                 } else {
                     hasRolledThisTurn = false
+                    pendingLightningCount = 0
+                    pendingVPCount = 0
+                    pendingAttackCount = 0
                     updateRollButtonState()
                 }
             } else {
                 hasRolledThisTurn = false
+                pendingLightningCount = 0
+                pendingVPCount = 0
+                pendingAttackCount = 0
                 updateRollButtonState()
             }
         }
@@ -294,6 +312,13 @@ class MainActivity : AppCompatActivity() {
         redRobotVP.text = "🔷 ${vps[0]} VP"
         whiteRobotVP.text = "🔷 ${vps[1]} VP"
         yellowRobotVP.text = "🔷 ${vps[2]} VP"
+    }
+
+    private fun updateHealthDisplays() {
+        val health = robotViewModel.getAllHealth()
+        redRobotHealth.text = "❤️ ${health[0]}"
+        whiteRobotHealth.text = "❤️ ${health[1]}"
+        yellowRobotHealth.text = "❤️ ${health[2]}"
     }
 
     private fun updateRobotCardBackgrounds() {
