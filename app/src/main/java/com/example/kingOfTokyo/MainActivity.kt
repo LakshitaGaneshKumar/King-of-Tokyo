@@ -102,6 +102,9 @@ class MainActivity : AppCompatActivity() {
             pendingLightningCount = 0
             pendingVPCount = 0
             applyRollButton.visibility = View.GONE
+            hasRolledThisTurn = false
+            robotViewModel.advanceTurn()
+            updateRobot()
             updateRollButtonState()
             updateEnergyDisplays()
             updateTokyoOccupantDisplay()
