@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,12 +21,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var redRobotImg : ImageView
     private lateinit var whiteRobotImg : ImageView
     private lateinit var yellowRobotImg : ImageView
-
-    // wire up the message_box from the activity_main.xml file
     private lateinit var messageBox : TextView
-
     private lateinit var purchaseButton : Button
     private lateinit var rollButton : Button
+    private lateinit var redRobotCard : View
+    private lateinit var whiteRobotCard : View
+    private lateinit var yellowRobotCard : View
     private lateinit var robotImages : MutableList<ImageView>
     private val robotViewModel : RobotViewModel by viewModels()
     private val robots = listOf(
@@ -51,16 +52,22 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, "Entered onCreate(savedInstanceState: Bundle?)")
         Log.d(TAG, "Got a viewModel : $robotViewModel")
+
         redRobotImg = findViewById(R.id.red_robot)
         whiteRobotImg = findViewById(R.id.white_robot)
         yellowRobotImg = findViewById(R.id.yellow_robot)
         messageBox = findViewById(R.id.message_box)
-
         purchaseButton = findViewById(R.id.purchase_button)
         rollButton = findViewById(R.id.roll_button)
+        redRobotCard = findViewById(R.id.red_robot_card)
+        whiteRobotCard = findViewById(R.id.white_robot_card)
+        yellowRobotCard = findViewById(R.id.yellow_robot_card)
         robotImages = mutableListOf(redRobotImg, whiteRobotImg, yellowRobotImg)
+
         if (robotViewModel.currentTurn != 0) {
             updateRobot()
+        } else {
+            updateRobotCardBackgrounds()
         }
 
         redRobotImg.setOnClickListener {
@@ -105,15 +112,13 @@ class MainActivity : AppCompatActivity() {
     private val rollDiceLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
             // dice result returned — no extra data needed for now
+            // TODO
         }
 
     private val robotPurchaseLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // TODO do something with the data
                 val robotPurchaseMade = result.data?.getStringExtra(EXTRA_ROBOT_PURCHASE_MADE) ?: "0"
-
-                // HW 3a
                 if (robotPurchaseMade != "0") {
                     robotViewModel.spendEnergy(robotPurchaseMade.toInt())
                     if (robotPurchaseMade == "1") {
@@ -123,9 +128,7 @@ class MainActivity : AppCompatActivity() {
                     } else if (robotPurchaseMade == "3") {
                         robotViewModel.addPurchase(robotViewModel.selectedRewards[2].name)
                     }
-
                 }
-                //Toast.makeText(this, "Purchase Made: ${robotPurchaseMade}", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -167,6 +170,7 @@ class MainActivity : AppCompatActivity() {
         updateMessageBox()
         setRobotTurn()
         setRobotImages()
+        updateRobotCardBackgrounds()
     }
     private fun updateMessageBox() {
         messageBox.setText(robots[robotViewModel.currentTurn - 1].robotMessageResource)
@@ -186,5 +190,17 @@ class MainActivity : AppCompatActivity() {
                 robotImages[indy].setImageResource(robots[indy].robotImageSmall)
             }
         }
+    }
+
+    private fun updateRobotCardBackgrounds() {
+        redRobotCard.setBackgroundResource(
+            if (robots[0].myTurn) R.drawable.die_kept_background else R.drawable.die_unkept_background
+        )
+        whiteRobotCard.setBackgroundResource(
+            if (robots[1].myTurn) R.drawable.die_kept_background else R.drawable.die_unkept_background
+        )
+        yellowRobotCard.setBackgroundResource(
+            if (robots[2].myTurn) R.drawable.die_kept_background else R.drawable.die_unkept_background
+        )
     }
 }

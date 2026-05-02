@@ -17,11 +17,12 @@
         android:padding="8dp">
 
         <LinearLayout
+            android:id="@+id/yellow_robot_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@android:color/white">
+            android:background="@drawable/die_unkept_background">
 
             <ImageView
                 android:id="@+id/yellow_robot"
@@ -122,11 +123,12 @@
             android:layout_marginEnd="4dp">
 
             <LinearLayout
+                android:id="@+id/red_robot_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@android:color/white">
+                android:background="@drawable/die_unkept_background">
 
                 <ImageView
                     android:id="@+id/red_robot"
@@ -167,11 +169,12 @@
             android:layout_marginStart="4dp">
 
             <LinearLayout
+                android:id="@+id/white_robot_card"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="@android:color/white">
+                android:background="@drawable/die_unkept_background">
 
                 <ImageView
                     android:id="@+id/white_robot"
