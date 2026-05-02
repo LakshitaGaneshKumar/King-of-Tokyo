@@ -24,6 +24,10 @@
             android:name=".RobotPurchase"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".RollDice"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
