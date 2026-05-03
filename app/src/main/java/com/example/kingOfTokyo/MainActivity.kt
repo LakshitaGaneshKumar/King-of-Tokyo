@@ -269,10 +269,12 @@ class MainActivity : AppCompatActivity() {
             return
         }
         robotViewModel.advanceTurn()
+        robotViewModel.applyStartOfTurnTokyoVP()
         hasRolledThisTurn = false
         applyRollButton.visibility = View.GONE
         updateRollButtonState()
         updateRobot()
+        updateVPDisplays()
         val purchases = robotViewModel.getPurchases()
         if (purchases.size != 0) {
             Toast.makeText(this, "Purchases: $purchases", Toast.LENGTH_SHORT).show()
@@ -419,7 +421,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun finishTurnAfterApply() {
         robotViewModel.advanceTurn()
+        robotViewModel.applyStartOfTurnTokyoVP()
         updateRobot()
+        updateVPDisplays()
         updateRollButtonState()
     }
 }

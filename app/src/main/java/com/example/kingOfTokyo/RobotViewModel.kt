@@ -117,6 +117,7 @@ class RobotViewModel : ViewModel() {
     fun enterTokyoIfEmpty(turn: Int): Boolean {
         if (!isTokyoOccupied() && turn in 1..3) {
             tokyoOccupantTurn = turn
+            robotVictoryPoints[turn - 1] += 1
             return true
         }
         return false
@@ -158,6 +159,13 @@ class RobotViewModel : ViewModel() {
     fun forceEnterTokyo(turn: Int) {
         if (turn in 1..3) {
             tokyoOccupantTurn = turn
+            robotVictoryPoints[turn - 1] += 1
+        }
+    }
+
+    fun applyStartOfTurnTokyoVP() {
+        if (turnCount in 1..3 && tokyoOccupantTurn == turnCount) {
+            robotVictoryPoints[turnCount - 1] += 2
         }
     }
 
