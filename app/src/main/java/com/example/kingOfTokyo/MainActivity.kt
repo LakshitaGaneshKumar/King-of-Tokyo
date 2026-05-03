@@ -195,7 +195,6 @@ class MainActivity : AppCompatActivity() {
         purchaseButton.setOnClickListener {
             val currentEnergy = robotViewModel.getEnergy()
             val currentRobot = robotViewModel.currentTurn
-            robotViewModel.shuffleRewards()
             val rewards = robotViewModel.selectedRewards
             val intent = RobotPurchase.newIntent(this, currentEnergy, currentRobot).apply {
                 putExtra("REWARD_1_NAME", rewards[0].name)
@@ -247,17 +246,29 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val robotPurchaseMade = result.data?.getStringExtra(EXTRA_ROBOT_PURCHASE_MADE) ?: "0"
                 if (robotPurchaseMade != "0") {
-                    robotViewModel.spendEnergy(robotPurchaseMade.toInt())
-                    if (robotPurchaseMade == "1") {
-                        robotViewModel.addPurchase(robotViewModel.selectedRewards[0].name)
-                    } else if (robotPurchaseMade == "2") {
-                        robotViewModel.addPurchase(robotViewModel.selectedRewards[1].name)
-                    } else if (robotPurchaseMade == "3") {
-                        robotViewModel.addPurchase(robotViewModel.selectedRewards[2].name)
+                    val rewardIndex = robotPurchaseMade.toInt() - 1
+                    val reward = robotViewModel.selectedRewards[rewardIndex]
+                    robotViewModel.spendEnergy(reward.cost)
+                    robotViewModel.addPurchase(reward.name)
+                    when (reward.name) {
+                        "Heal 2 Health" -> robotViewModel.applyRepairNanobots()
+                        "Gain 2 Victory Points" -> robotViewModel.addVictoryPoints(2)
+                        "Deal 1 Damage to All" -> {
+                            robotViewModel.applyShockwaveBurst()
+                            val newlyEliminated = robotViewModel.eliminateIfDead()
+                            for (turn in newlyEliminated) {
+                                Toast.makeText(this, "${getRobotName(turn)} has been eliminated!", Toast.LENGTH_SHORT).show()
+                            }
+                            updateEliminatedDisplay()
+                            val winner = robotViewModel.getSoleSurvivorTurn()
+                                .takeIf { it != 0 } ?: robotViewModel.getVPWinnerTurn().takeIf { it != 0 }
+                            if (winner != null) showWinnerDialog(winner)
+                        }
                     }
+                    updateEnergyDisplays()
+                    updateHealthDisplays()
                 }
             }
-
         }
     override fun onStart() {
         super.onStart()

@@ -39,92 +39,84 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:padding="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/robot_layout">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/white_robot"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
 
             <Button
                 android:id="@+id/buy_reward_a"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/reward_a"
-                tools:layout_editor_absoluteX="53dp"
-                tools:layout_editor_absoluteY="420dp" />
+                android:layout_weight="1"
+                android:text="@string/reward_a" />
 
             <TextView
                 android:id="@+id/reward_a_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="@string/reward_a_cost"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="8dp"
                 android:textSize="30sp"
                 app:drawableEndCompat="@drawable/energy_counter"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/white_robot">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
 
             <Button
                 android:id="@+id/buy_reward_b"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/reward_b"
-                tools:layout_editor_absoluteX="53dp"
-                tools:layout_editor_absoluteY="420dp" />
+                android:layout_weight="1"
+                android:text="@string/reward_b" />
 
             <TextView
                 android:id="@+id/reward_b_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="@string/reward_b_cost"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="8dp"
                 android:textSize="30sp"
                 app:drawableEndCompat="@drawable/energy_counter"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/white_robot"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <Button
                 android:id="@+id/buy_reward_c"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/reward_c"
-                tools:layout_editor_absoluteX="53dp"
-                tools:layout_editor_absoluteY="420dp" />
+                android:layout_weight="1"
+                android:text="@string/reward_c" />
 
             <TextView
                 android:id="@+id/reward_c_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="@string/reward_c_cost"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="8dp"
                 android:textSize="30sp"
                 app:drawableEndCompat="@drawable/energy_counter"/>
 

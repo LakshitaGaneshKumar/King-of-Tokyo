@@ -32,23 +32,26 @@ class RobotViewModel : ViewModel() {
         mutableListOf<String?>()
     )
 
-    private val allRewards = listOf(
-        Rewards("Reward A", 1),
-        Rewards("Reward B", 2),
-        Rewards("Reward C", 3),
-        Rewards("Reward D", 3),
-        Rewards("Reward E", 4),
-        Rewards("Reward F", 4),
-        Rewards("Reward G", 7),
-    )
-    var selectedRewards = allRewards.shuffled().take(3).sortedWith(
-        compareBy({ it.name })
+    val selectedRewards = listOf(
+        Rewards("Heal 2 Health", 3),
+        Rewards("Gain 2 Victory Points", 5),
+        Rewards("Deal 1 Damage to All", 6)
     )
 
-    fun shuffleRewards() {
-        selectedRewards = allRewards.shuffled().take(3).sortedWith(
-            compareBy({ it.name })
-        )
+    fun applyRepairNanobots() {
+        if (turnCount !in 1..3) return
+        if (tokyoOccupantTurn == turnCount) return
+        val index = turnCount - 1
+        robotHealth[index] = (robotHealth[index] + 2).coerceAtMost(10)
+    }
+
+    fun applyShockwaveBurst() {
+        if (turnCount !in 1..3) return
+        for (targetTurn in 1..3) {
+            if (targetTurn != turnCount) {
+                damageRobot(targetTurn, 1)
+            }
+        }
     }
 
     val currentTurn : Int
