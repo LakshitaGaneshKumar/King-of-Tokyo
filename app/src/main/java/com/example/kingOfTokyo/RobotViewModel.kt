@@ -21,6 +21,7 @@ class RobotViewModel : ViewModel() {
     private var turnCount = 0
     private var tokyoOccupantTurn = 0
     private var robotHealth = mutableListOf(10, 10, 10)
+    private var robotEliminated = mutableListOf(false, false, false)
     private var robotEnergy = mutableListOf(0, 0, 0)
     private var robotVictoryPoints = mutableListOf(0, 0, 0)
 
@@ -58,10 +59,45 @@ class RobotViewModel : ViewModel() {
     }
 
     fun advanceTurn() {
-        turnCount++
-        if (turnCount > 3) {
-            turnCount = 1
+        if (getAliveCount() <= 1) return
+        var steps = 0
+        do {
+            turnCount++
+            if (turnCount > 3) turnCount = 1
+            steps++
+        } while (robotEliminated[turnCount - 1] && steps < 3)
+    }
+
+    fun getAliveCount(): Int = robotEliminated.count { !it }
+
+    fun getEliminatedStates(): List<Boolean> = robotEliminated.toList()
+
+    fun isEliminated(turn: Int): Boolean = turn in 1..3 && robotEliminated[turn - 1]
+
+    fun eliminateIfDead(): List<Int> {
+        val newlyEliminated = mutableListOf<Int>()
+        for (i in 0..2) {
+            if (!robotEliminated[i] && robotHealth[i] <= 0) {
+                robotEliminated[i] = true
+                if (tokyoOccupantTurn == i + 1) {
+                    tokyoOccupantTurn = 0
+                }
+                newlyEliminated.add(i + 1)
+            }
         }
+        return newlyEliminated
+    }
+
+    fun getSoleSurvivorTurn(): Int {
+        val alive = (1..3).filter { !robotEliminated[it - 1] }
+        return if (alive.size == 1) alive[0] else 0
+    }
+
+    fun getVPWinnerTurn(): Int {
+        for (i in 0..2) {
+            if (!robotEliminated[i] && robotVictoryPoints[i] >= 20) return i + 1
+        }
+        return 0
     }
 
     fun addEnergyFromRoll(lightningCount: Int) {

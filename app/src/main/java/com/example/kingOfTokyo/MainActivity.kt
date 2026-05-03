@@ -120,11 +120,36 @@ class MainActivity : AppCompatActivity() {
             pendingHeartCount = 0
             applyRollButton.visibility = View.GONE
             hasRolledThisTurn = false
+
+            val newlyEliminated = robotViewModel.eliminateIfDead()
+            for (turn in newlyEliminated) {
+                Toast.makeText(this, "${getRobotName(turn)} has been eliminated!", Toast.LENGTH_SHORT).show()
+            }
+
+            val tokyoOccupantKilled = attackOutcome.attackerWasOutsideTokyo &&
+                newlyEliminated.contains(attackOutcome.tokyoOccupantDamagedTurn)
+            if (tokyoOccupantKilled) {
+                robotViewModel.forceEnterTokyo(currentTurn)
+                Toast.makeText(this, "${getRobotName(currentTurn)} entered Tokyo!", Toast.LENGTH_SHORT).show()
+            }
+
             updateEnergyDisplays()
             updateHealthDisplays()
             updateTokyoOccupantDisplay()
+            updateEliminatedDisplay()
 
-            if (attackOutcome.attackerWasOutsideTokyo && attackOutcome.tokyoOccupantDamagedTurn in 1..3) {
+            // Check win conditions
+            val winner = robotViewModel.getSoleSurvivorTurn()
+                .takeIf { it != 0 } ?: robotViewModel.getVPWinnerTurn().takeIf { it != 0 }
+            if (winner != null) {
+                showWinnerDialog(winner)
+                return@setOnClickListener
+            }
+
+            // Show Tokyo leave prompt only if occupant survived the attack
+            if (attackOutcome.attackerWasOutsideTokyo &&
+                attackOutcome.tokyoOccupantDamagedTurn in 1..3 &&
+                !newlyEliminated.contains(attackOutcome.tokyoOccupantDamagedTurn)) {
                 showTokyoLeavePrompt(
                     damagedRobotTurn = attackOutcome.tokyoOccupantDamagedTurn,
                     attackerTurn = currentTurn
@@ -425,5 +450,29 @@ class MainActivity : AppCompatActivity() {
         updateRobot()
         updateVPDisplays()
         updateRollButtonState()
+        val vpWinner = robotViewModel.getVPWinnerTurn()
+        if (vpWinner != 0) {
+            showWinnerDialog(vpWinner)
+        }
+    }
+
+    private fun showWinnerDialog(winnerTurn: Int) {
+        AlertDialog.Builder(this)
+            .setTitle("Game Over!")
+            .setMessage("${getRobotName(winnerTurn)} wins the game!")
+            .setPositiveButton("New Game") { _, _ -> recreate() }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun updateEliminatedDisplay() {
+        val eliminated = robotViewModel.getEliminatedStates()
+        val cards = listOf(redRobotCard, whiteRobotCard, yellowRobotCard)
+        val images = listOf(redRobotImg, whiteRobotImg, yellowRobotImg)
+        for (i in 0..2) {
+            val alpha = if (eliminated[i]) 0.3f else 1.0f
+            cards[i].alpha = alpha
+            images[i].alpha = alpha
+        }
     }
 }
