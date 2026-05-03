@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private var pendingLightningCount = 0
     private var pendingVPCount = 0
     private var pendingAttackCount = 0
+    private var pendingHeartCount = 0
     private var hasRolledThisTurn = false
     private var awaitingTokyoChoice = false
     private val robotViewModel : RobotViewModel by viewModels()
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity() {
             val currentTurn = robotViewModel.currentTurn
             robotViewModel.addEnergyFromRoll(pendingLightningCount)
             robotViewModel.addVictoryPoints(pendingVPCount)
+            robotViewModel.applyHealingFromRoll(pendingHeartCount)
             val attackOutcome = robotViewModel.applyAttackFromRoll(pendingAttackCount)
             if (robotViewModel.enterTokyoIfEmpty(currentTurn)) {
                 Toast.makeText(
@@ -115,6 +117,7 @@ class MainActivity : AppCompatActivity() {
             pendingLightningCount = 0
             pendingVPCount = 0
             pendingAttackCount = 0
+            pendingHeartCount = 0
             applyRollButton.visibility = View.GONE
             hasRolledThisTurn = false
             updateEnergyDisplays()
@@ -191,6 +194,7 @@ class MainActivity : AppCompatActivity() {
                     pendingLightningCount = faces.count { it == "⚡" || it == "⚡️" }
                     pendingVPCount = calculateVPFromDice(faces)
                     pendingAttackCount = faces.count { it == "💥" }
+                    pendingHeartCount = faces.count { it == "❤" || it == "❤️" }
                     diceResultText.text = "Last roll: ${faces.joinToString("  ")}"
                     diceResultText.visibility = View.VISIBLE
                     applyRollButton.visibility = View.VISIBLE
@@ -200,6 +204,7 @@ class MainActivity : AppCompatActivity() {
                     pendingLightningCount = 0
                     pendingVPCount = 0
                     pendingAttackCount = 0
+                    pendingHeartCount = 0
                     updateRollButtonState()
                 }
             } else {
@@ -207,6 +212,7 @@ class MainActivity : AppCompatActivity() {
                 pendingLightningCount = 0
                 pendingVPCount = 0
                 pendingAttackCount = 0
+                pendingHeartCount = 0
                 updateRollButtonState()
             }
         }

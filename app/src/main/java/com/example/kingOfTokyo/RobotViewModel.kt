@@ -70,6 +70,18 @@ class RobotViewModel : ViewModel() {
         }
     }
 
+    fun applyHealingFromRoll(heartCount: Int) {
+        if (heartCount <= 0 || turnCount !in 1..3) {
+            return
+        }
+        if (tokyoOccupantTurn == turnCount) {
+            return
+        }
+
+        val index = turnCount - 1
+        robotHealth[index] = (robotHealth[index] + heartCount).coerceAtMost(10)
+    }
+
     fun getEnergy() : Int {
         return robotEnergy[turnCount - 1]
     }
